@@ -1,6 +1,6 @@
 {
     "name": "@whitehead/graphql-schema",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "GraphQL schema and common queries for whitehead",
     "graphqlEndpoint": "https://api.mauna.cloud/v1/graphql",
     "main": "index.js",
