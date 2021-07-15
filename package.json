@@ -1,0 +1,42 @@
+{
+    "name": "@whitehead/graphql-schema",
+    "version": "0.1.0",
+    "description": "GraphQL schema and common queries for whitehead",
+    "graphqlEndpoint": "https://api.mauna.cloud/v1/graphql",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint . --fix",
+        "check-env": "validEnv HASURA_ADMIN_SECRET",
+        "get-schema": "get-graphql-schema -h X-Hasura-Admin-Secret=$HASURA_ADMIN_SECRET ${WHITEHEAD_GRAPHQL_ENDPOINT:-`pkg-jq -r .graphqlEndpoint`} > schema.graphql",
+        "get-schema-json": "graphql-codegen --config codegen.js",
+        "prepublishOnly": "npm run lint",
+        "version-bump": "git diff-index --quiet HEAD -- || json-bump package.json",
+        "build": "npm run check-env && npm run get-schema && npm run get-schema-json && npm run lint"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/whitehead-ai/graphql.git"
+    },
+    "author": "philip@whitehead.ai",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/whitehead-ai/graphql/issues"
+    },
+    "homepage": "https://github.com/whitehead-ai/graphql#readme",
+    "devDependencies": {
+        "@graphql-codegen/cli": "1.21.1",
+        "@graphql-codegen/introspection": "1.18.1",
+        "@graphql-codegen/time": "^2.0.2",
+        "@graphql-eslint/eslint-plugin": "^0.9.1",
+        "eslint": "^7.23.0",
+        "get-graphql-schema": "^2.1.2",
+        "json-bump": "^1.0.2",
+        "node-jq": "^1.12.0",
+        "pkg-jq": "^0.2.11",
+        "prettier": "^2.3.2",
+        "valid-env": "^1.1.1"
+    },
+    "dependencies": {
+        "graphql": "^15.5.0"
+    }
+}
