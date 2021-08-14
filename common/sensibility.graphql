@@ -1,4 +1,4 @@
-query sensibility($input: [String!]!, $history: [Turn!]! = []) {
+query sensibility($input: [String!]!, $history: [Turn!]!) {
   callSensibility(input: $input, history: $history) {
     result {
       alternative
