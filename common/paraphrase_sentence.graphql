@@ -1,5 +1,0 @@
-query paraphraseSentence($input: String!) {
-  result: callParaphraseSentence(input: $input) {
-    paraphrases: result
-  }
-}

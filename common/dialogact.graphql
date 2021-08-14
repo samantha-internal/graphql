@@ -1,0 +1,5 @@
+query dialogact($input: String!) {
+  callDialogact(input: $input) {
+    result
+  }
+}

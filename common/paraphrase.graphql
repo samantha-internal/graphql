@@ -1,0 +1,5 @@
+query paraphrase($input: String!) {
+  callParaphrase(input: $input) {
+    result
+  }
+}

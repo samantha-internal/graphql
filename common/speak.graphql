@@ -1,0 +1,5 @@
+query speak($input: String!) {
+  callSpeak(input: $input) {
+    result
+  }
+}

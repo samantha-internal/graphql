@@ -1,7 +1,0 @@
-query speechToText($input: String!) {
-  result: callSpeechToText(audioB64: $input) {
-    alternatives {
-      transcript
-    }
-  }
-}

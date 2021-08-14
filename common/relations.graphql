@@ -1,0 +1,5 @@
+query relations($input: String!, $relation: Relation! = AtLocation) {
+  callRelations(input: $input, relation: $relation) {
+    result
+  }
+}

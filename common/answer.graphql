@@ -1,0 +1,5 @@
+query answer($input: String!, $context: String! = "") {
+  callAnswer(input: $input, context: $context) {
+    result
+  }
+}
