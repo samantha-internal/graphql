@@ -1,5 +1,0 @@
-query renderCSS($ssml: String!, $css: String!) {
-  result: callApplyVoiceCSS(voice_css: $css, styled_ssml: $ssml) {
-    ssml
-  }
-}

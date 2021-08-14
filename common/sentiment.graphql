@@ -1,0 +1,8 @@
+query sentiment($input: String!) {
+  callSentiment(input: $input) {
+    result {
+      label
+      score
+    }
+  }
+}

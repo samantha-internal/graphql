@@ -1,0 +1,5 @@
+query choose($input: String!, $context: String! = "", $choices: [String!]!) {
+  callAnswer(input: $input, choices: $choices, context: $context) {
+    result
+  }
+}

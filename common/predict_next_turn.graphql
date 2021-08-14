@@ -1,8 +1,0 @@
-query predictNextTurn($history: [Turn!]!, $input: [String!]!) {
-  result: callNextDialogTurn(history: $history, input: $input) {
-    nextTurns: result {
-      alternative
-      score
-    }
-  }
-}

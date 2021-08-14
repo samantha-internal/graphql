@@ -1,0 +1,5 @@
+query transcribe($input: Base64!) {
+  callTranscribe(input: $input) {
+    result
+  }
+}
