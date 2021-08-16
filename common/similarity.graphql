@@ -1,4 +1,4 @@
-query similarity($input: String!, $candidates: [String!]! = []) {
+query similarity($input: String!, $candidates: [String!]!) {
   callSimilarity(input: $input, candidates: $candidates) {
     result {
       candidate
