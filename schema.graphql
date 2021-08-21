@@ -4,499 +4,21 @@ schema {
   subscription: subscription_root
 }
 
-"""
-whether this query should be cached (Hasura Cloud only)
-"""
+"""whether this query should be cached (Hasura Cloud only)"""
 directive @cached(
-  """
-  measured in seconds
-  """
+  """measured in seconds"""
   ttl: Int! = 60
 
-  """
-  refresh the cache entry
-  """
+  """refresh the cache entry"""
   refresh: Boolean! = false
 ) on QUERY
-
-scalar _name
-
-"""
-Boolean expression to compare columns of type "_name". All fields are combined with logical 'AND'.
-"""
-input _name_comparison_exp {
-  _eq: _name
-  _gt: _name
-  _gte: _name
-  _in: [_name!]
-  _is_null: Boolean
-  _lt: _name
-  _lte: _name
-  _neq: _name
-  _nin: [_name!]
-}
 
 type AnswerResult {
   result: String!
 }
 
-"""
-columns and relationships of "apps"
-"""
-type apps {
-  created_at: timestamptz!
-
-  """
-  An object relationship
-  """
-  developer: developers!
-  developer_id: Int!
-  metadata(
-    """
-    JSON select path
-    """
-    path: String
-  ): jsonb!
-  object_id: Int!
-  slug: String!
-}
-
-"""
-aggregated selection of "apps"
-"""
-type apps_aggregate {
-  aggregate: apps_aggregate_fields
-  nodes: [apps!]!
-}
-
-"""
-aggregate fields of "apps"
-"""
-type apps_aggregate_fields {
-  avg: apps_avg_fields
-  count(columns: [apps_select_column!], distinct: Boolean): Int!
-  max: apps_max_fields
-  min: apps_min_fields
-  stddev: apps_stddev_fields
-  stddev_pop: apps_stddev_pop_fields
-  stddev_samp: apps_stddev_samp_fields
-  sum: apps_sum_fields
-  var_pop: apps_var_pop_fields
-  var_samp: apps_var_samp_fields
-  variance: apps_variance_fields
-}
-
-"""
-order by aggregate values of table "apps"
-"""
-input apps_aggregate_order_by {
-  avg: apps_avg_order_by
-  count: order_by
-  max: apps_max_order_by
-  min: apps_min_order_by
-  stddev: apps_stddev_order_by
-  stddev_pop: apps_stddev_pop_order_by
-  stddev_samp: apps_stddev_samp_order_by
-  sum: apps_sum_order_by
-  var_pop: apps_var_pop_order_by
-  var_samp: apps_var_samp_order_by
-  variance: apps_variance_order_by
-}
-
-"""
-append existing jsonb value of filtered columns with new jsonb value
-"""
-input apps_append_input {
-  metadata: jsonb
-}
-
-"""
-input type for inserting array relation for remote table "apps"
-"""
-input apps_arr_rel_insert_input {
-  data: [apps_insert_input!]!
-
-  """
-  on conflict condition
-  """
-  on_conflict: apps_on_conflict
-}
-
-"""
-aggregate avg on columns
-"""
-type apps_avg_fields {
-  developer_id: Float
-  object_id: Float
-}
-
-"""
-order by avg() on columns of table "apps"
-"""
-input apps_avg_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-Boolean expression to filter rows from the table "apps". All fields are combined with a logical 'AND'.
-"""
-input apps_bool_exp {
-  _and: [apps_bool_exp!]
-  _not: apps_bool_exp
-  _or: [apps_bool_exp!]
-  created_at: timestamptz_comparison_exp
-  developer: developers_bool_exp
-  developer_id: Int_comparison_exp
-  metadata: jsonb_comparison_exp
-  object_id: Int_comparison_exp
-  slug: String_comparison_exp
-}
-
-"""
-unique or primary key constraints on table "apps"
-"""
-enum apps_constraint {
-  """
-  unique or primary key constraint
-  """
-  apps_object_id_key
-
-  """
-  unique or primary key constraint
-  """
-  apps_slug_key
-}
-
-"""
-delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-"""
-input apps_delete_at_path_input {
-  metadata: [String!]
-}
-
-"""
-delete the array element with specified index (negative integers count from the
-end). throws an error if top level container is not an array
-"""
-input apps_delete_elem_input {
-  metadata: Int
-}
-
-"""
-delete key/value pair or string element. key/value pairs are matched based on their key value
-"""
-input apps_delete_key_input {
-  metadata: String
-}
-
-"""
-input type for incrementing numeric columns in table "apps"
-"""
-input apps_inc_input {
-  developer_id: Int
-  object_id: Int
-}
-
-"""
-input type for inserting data into table "apps"
-"""
-input apps_insert_input {
-  created_at: timestamptz
-  developer: developers_obj_rel_insert_input
-  developer_id: Int
-  metadata: jsonb
-  object_id: Int
-  slug: String
-}
-
-"""
-aggregate max on columns
-"""
-type apps_max_fields {
-  created_at: timestamptz
-  developer_id: Int
-  object_id: Int
-  slug: String
-}
-
-"""
-order by max() on columns of table "apps"
-"""
-input apps_max_order_by {
-  created_at: order_by
-  developer_id: order_by
-  object_id: order_by
-  slug: order_by
-}
-
-"""
-aggregate min on columns
-"""
-type apps_min_fields {
-  created_at: timestamptz
-  developer_id: Int
-  object_id: Int
-  slug: String
-}
-
-"""
-order by min() on columns of table "apps"
-"""
-input apps_min_order_by {
-  created_at: order_by
-  developer_id: order_by
-  object_id: order_by
-  slug: order_by
-}
-
-"""
-response of any mutation on the table "apps"
-"""
-type apps_mutation_response {
-  """
-  number of rows affected by the mutation
-  """
-  affected_rows: Int!
-
-  """
-  data from the rows affected by the mutation
-  """
-  returning: [apps!]!
-}
-
-"""
-on conflict condition type for table "apps"
-"""
-input apps_on_conflict {
-  constraint: apps_constraint!
-  update_columns: [apps_update_column!]! = []
-  where: apps_bool_exp
-}
-
-"""
-Ordering options when selecting data from "apps".
-"""
-input apps_order_by {
-  created_at: order_by
-  developer: developers_order_by
-  developer_id: order_by
-  metadata: order_by
-  object_id: order_by
-  slug: order_by
-}
-
-"""
-prepend existing jsonb value of filtered columns with new jsonb value
-"""
-input apps_prepend_input {
-  metadata: jsonb
-}
-
-"""
-select columns of table "apps"
-"""
-enum apps_select_column {
-  """
-  column name
-  """
-  created_at
-
-  """
-  column name
-  """
-  developer_id
-
-  """
-  column name
-  """
-  metadata
-
-  """
-  column name
-  """
-  object_id
-
-  """
-  column name
-  """
-  slug
-}
-
-"""
-input type for updating data in table "apps"
-"""
-input apps_set_input {
-  created_at: timestamptz
-  developer_id: Int
-  metadata: jsonb
-  object_id: Int
-  slug: String
-}
-
-"""
-aggregate stddev on columns
-"""
-type apps_stddev_fields {
-  developer_id: Float
-  object_id: Float
-}
-
-"""
-order by stddev() on columns of table "apps"
-"""
-input apps_stddev_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-aggregate stddev_pop on columns
-"""
-type apps_stddev_pop_fields {
-  developer_id: Float
-  object_id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "apps"
-"""
-input apps_stddev_pop_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-aggregate stddev_samp on columns
-"""
-type apps_stddev_samp_fields {
-  developer_id: Float
-  object_id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "apps"
-"""
-input apps_stddev_samp_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-aggregate sum on columns
-"""
-type apps_sum_fields {
-  developer_id: Int
-  object_id: Int
-}
-
-"""
-order by sum() on columns of table "apps"
-"""
-input apps_sum_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-update columns of table "apps"
-"""
-enum apps_update_column {
-  """
-  column name
-  """
-  created_at
-
-  """
-  column name
-  """
-  developer_id
-
-  """
-  column name
-  """
-  metadata
-
-  """
-  column name
-  """
-  object_id
-
-  """
-  column name
-  """
-  slug
-}
-
-"""
-aggregate var_pop on columns
-"""
-type apps_var_pop_fields {
-  developer_id: Float
-  object_id: Float
-}
-
-"""
-order by var_pop() on columns of table "apps"
-"""
-input apps_var_pop_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-aggregate var_samp on columns
-"""
-type apps_var_samp_fields {
-  developer_id: Float
-  object_id: Float
-}
-
-"""
-order by var_samp() on columns of table "apps"
-"""
-input apps_var_samp_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-aggregate variance on columns
-"""
-type apps_variance_fields {
-  developer_id: Float
-  object_id: Float
-}
-
-"""
-order by variance() on columns of table "apps"
-"""
-input apps_variance_order_by {
-  developer_id: order_by
-  object_id: order_by
-}
-
-"""
-The `Base64` scalar type represents a base64-encoded String.
-"""
+"""The `Base64` scalar type represents a base64-encoded String."""
 scalar Base64
-
-scalar bigint
-
-"""
-Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
-"""
-input bigint_comparison_exp {
-  _eq: bigint
-  _gt: bigint
-  _gte: bigint
-  _in: [bigint!]
-  _is_null: Boolean
-  _lt: bigint
-  _lte: bigint
-  _neq: bigint
-  _nin: [bigint!]
-}
 
 """
 Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
@@ -517,797 +39,13 @@ type ChitchatResult {
   result: String!
 }
 
-"""
-columns and relationships of "developers"
-"""
-type developers {
-  active: Boolean!
-  api_key: String!
-
-  """
-  An array relationship
-  """
-  apps(
-    """
-    distinct select on columns
-    """
-    distinct_on: [apps_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [apps_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: apps_bool_exp
-  ): [apps!]!
-
-  """
-  An aggregate relationship
-  """
-  apps_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [apps_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [apps_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: apps_bool_exp
-  ): apps_aggregate!
-  created_at: timestamptz!
-  email: String!
-  github_handle: String
-  metadata(
-    """
-    JSON select path
-    """
-    path: String
-  ): jsonb!
-  name: String!
-  object_id: Int!
-  onboarded: Boolean!
-
-  """
-  An array relationship
-  """
-  tokens(
-    """
-    distinct select on columns
-    """
-    distinct_on: [tokens_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [tokens_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: tokens_bool_exp
-  ): [tokens!]!
-
-  """
-  An aggregate relationship
-  """
-  tokens_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [tokens_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [tokens_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: tokens_bool_exp
-  ): tokens_aggregate!
-  uid: String!
-
-  """
-  An array relationship
-  """
-  usages(
-    """
-    distinct select on columns
-    """
-    distinct_on: [usage_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [usage_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: usage_bool_exp
-  ): [usage!]!
-
-  """
-  An aggregate relationship
-  """
-  usages_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [usage_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [usage_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: usage_bool_exp
-  ): usage_aggregate!
-}
-
-"""
-aggregated selection of "developers"
-"""
-type developers_aggregate {
-  aggregate: developers_aggregate_fields
-  nodes: [developers!]!
-}
-
-"""
-aggregate fields of "developers"
-"""
-type developers_aggregate_fields {
-  avg: developers_avg_fields
-  count(columns: [developers_select_column!], distinct: Boolean): Int!
-  max: developers_max_fields
-  min: developers_min_fields
-  stddev: developers_stddev_fields
-  stddev_pop: developers_stddev_pop_fields
-  stddev_samp: developers_stddev_samp_fields
-  sum: developers_sum_fields
-  var_pop: developers_var_pop_fields
-  var_samp: developers_var_samp_fields
-  variance: developers_variance_fields
-}
-
-"""
-append existing jsonb value of filtered columns with new jsonb value
-"""
-input developers_append_input {
-  metadata: jsonb
-}
-
-"""
-aggregate avg on columns
-"""
-type developers_avg_fields {
-  object_id: Float
-}
-
-"""
-Boolean expression to filter rows from the table "developers". All fields are combined with a logical 'AND'.
-"""
-input developers_bool_exp {
-  _and: [developers_bool_exp!]
-  _not: developers_bool_exp
-  _or: [developers_bool_exp!]
-  active: Boolean_comparison_exp
-  api_key: String_comparison_exp
-  apps: apps_bool_exp
-  created_at: timestamptz_comparison_exp
-  email: String_comparison_exp
-  github_handle: String_comparison_exp
-  metadata: jsonb_comparison_exp
-  name: String_comparison_exp
-  object_id: Int_comparison_exp
-  onboarded: Boolean_comparison_exp
-  tokens: tokens_bool_exp
-  uid: String_comparison_exp
-  usages: usage_bool_exp
-}
-
-"""
-unique or primary key constraints on table "developers"
-"""
-enum developers_constraint {
-  """
-  unique or primary key constraint
-  """
-  developers_api_key_key
-
-  """
-  unique or primary key constraint
-  """
-  developers_email_key
-
-  """
-  unique or primary key constraint
-  """
-  developers_github_handle_key
-
-  """
-  unique or primary key constraint
-  """
-  developers_object_id_key
-
-  """
-  unique or primary key constraint
-  """
-  developers_uid_key
-}
-
-"""
-delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-"""
-input developers_delete_at_path_input {
-  metadata: [String!]
-}
-
-"""
-delete the array element with specified index (negative integers count from the
-end). throws an error if top level container is not an array
-"""
-input developers_delete_elem_input {
-  metadata: Int
-}
-
-"""
-delete key/value pair or string element. key/value pairs are matched based on their key value
-"""
-input developers_delete_key_input {
-  metadata: String
-}
-
-"""
-input type for incrementing numeric columns in table "developers"
-"""
-input developers_inc_input {
-  object_id: Int
-}
-
-"""
-input type for inserting data into table "developers"
-"""
-input developers_insert_input {
-  active: Boolean
-  api_key: String
-  apps: apps_arr_rel_insert_input
-  created_at: timestamptz
-  email: String
-  github_handle: String
-  metadata: jsonb
-  name: String
-  object_id: Int
-  onboarded: Boolean
-  tokens: tokens_arr_rel_insert_input
-  uid: String
-  usages: usage_arr_rel_insert_input
-}
-
-"""
-aggregate max on columns
-"""
-type developers_max_fields {
-  api_key: String
-  created_at: timestamptz
-  email: String
-  github_handle: String
-  name: String
-  object_id: Int
-  uid: String
-}
-
-"""
-aggregate min on columns
-"""
-type developers_min_fields {
-  api_key: String
-  created_at: timestamptz
-  email: String
-  github_handle: String
-  name: String
-  object_id: Int
-  uid: String
-}
-
-"""
-response of any mutation on the table "developers"
-"""
-type developers_mutation_response {
-  """
-  number of rows affected by the mutation
-  """
-  affected_rows: Int!
-
-  """
-  data from the rows affected by the mutation
-  """
-  returning: [developers!]!
-}
-
-"""
-input type for inserting object relation for remote table "developers"
-"""
-input developers_obj_rel_insert_input {
-  data: developers_insert_input!
-
-  """
-  on conflict condition
-  """
-  on_conflict: developers_on_conflict
-}
-
-"""
-on conflict condition type for table "developers"
-"""
-input developers_on_conflict {
-  constraint: developers_constraint!
-  update_columns: [developers_update_column!]! = []
-  where: developers_bool_exp
-}
-
-"""
-Ordering options when selecting data from "developers".
-"""
-input developers_order_by {
-  active: order_by
-  api_key: order_by
-  apps_aggregate: apps_aggregate_order_by
-  created_at: order_by
-  email: order_by
-  github_handle: order_by
-  metadata: order_by
-  name: order_by
-  object_id: order_by
-  onboarded: order_by
-  tokens_aggregate: tokens_aggregate_order_by
-  uid: order_by
-  usages_aggregate: usage_aggregate_order_by
-}
-
-"""
-prepend existing jsonb value of filtered columns with new jsonb value
-"""
-input developers_prepend_input {
-  metadata: jsonb
-}
-
-"""
-select columns of table "developers"
-"""
-enum developers_select_column {
-  """
-  column name
-  """
-  active
-
-  """
-  column name
-  """
-  api_key
-
-  """
-  column name
-  """
-  created_at
-
-  """
-  column name
-  """
-  email
-
-  """
-  column name
-  """
-  github_handle
-
-  """
-  column name
-  """
-  metadata
-
-  """
-  column name
-  """
-  name
-
-  """
-  column name
-  """
-  object_id
-
-  """
-  column name
-  """
-  onboarded
-
-  """
-  column name
-  """
-  uid
-}
-
-"""
-input type for updating data in table "developers"
-"""
-input developers_set_input {
-  active: Boolean
-  api_key: String
-  created_at: timestamptz
-  email: String
-  github_handle: String
-  metadata: jsonb
-  name: String
-  object_id: Int
-  onboarded: Boolean
-  uid: String
-}
-
-"""
-aggregate stddev on columns
-"""
-type developers_stddev_fields {
-  object_id: Float
-}
-
-"""
-aggregate stddev_pop on columns
-"""
-type developers_stddev_pop_fields {
-  object_id: Float
-}
-
-"""
-aggregate stddev_samp on columns
-"""
-type developers_stddev_samp_fields {
-  object_id: Float
-}
-
-"""
-aggregate sum on columns
-"""
-type developers_sum_fields {
-  object_id: Int
-}
-
-"""
-update columns of table "developers"
-"""
-enum developers_update_column {
-  """
-  column name
-  """
-  active
-
-  """
-  column name
-  """
-  api_key
-
-  """
-  column name
-  """
-  created_at
-
-  """
-  column name
-  """
-  email
-
-  """
-  column name
-  """
-  github_handle
-
-  """
-  column name
-  """
-  metadata
-
-  """
-  column name
-  """
-  name
-
-  """
-  column name
-  """
-  object_id
-
-  """
-  column name
-  """
-  onboarded
-
-  """
-  column name
-  """
-  uid
-}
-
-"""
-aggregate var_pop on columns
-"""
-type developers_var_pop_fields {
-  object_id: Float
-}
-
-"""
-aggregate var_samp on columns
-"""
-type developers_var_samp_fields {
-  object_id: Float
-}
-
-"""
-aggregate variance on columns
-"""
-type developers_variance_fields {
-  object_id: Float
-}
-
-type DialogactResult {
-  result: String!
-}
-
 type DialogAlternative {
   alternative: String!
   score: Float!
 }
 
-"""
-columns and relationships of "events"
-"""
-type events {
-  action: String
-  changed_fields(
-    """
-    JSON select path
-    """
-    path: String
-  ): jsonb
-  developer_id: String
-  table: String
-  timestamp: timestamptz
-}
-
-"""
-aggregated selection of "events"
-"""
-type events_aggregate {
-  aggregate: events_aggregate_fields
-  nodes: [events!]!
-}
-
-"""
-aggregate fields of "events"
-"""
-type events_aggregate_fields {
-  count(columns: [events_select_column!], distinct: Boolean): Int!
-  max: events_max_fields
-  min: events_min_fields
-}
-
-"""
-append existing jsonb value of filtered columns with new jsonb value
-"""
-input events_append_input {
-  changed_fields: jsonb
-}
-
-"""
-Boolean expression to filter rows from the table "events". All fields are combined with a logical 'AND'.
-"""
-input events_bool_exp {
-  _and: [events_bool_exp!]
-  _not: events_bool_exp
-  _or: [events_bool_exp!]
-  action: String_comparison_exp
-  changed_fields: jsonb_comparison_exp
-  developer_id: String_comparison_exp
-  table: String_comparison_exp
-  timestamp: timestamptz_comparison_exp
-}
-
-"""
-delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-"""
-input events_delete_at_path_input {
-  changed_fields: [String!]
-}
-
-"""
-delete the array element with specified index (negative integers count from the
-end). throws an error if top level container is not an array
-"""
-input events_delete_elem_input {
-  changed_fields: Int
-}
-
-"""
-delete key/value pair or string element. key/value pairs are matched based on their key value
-"""
-input events_delete_key_input {
-  changed_fields: String
-}
-
-"""
-input type for inserting data into table "events"
-"""
-input events_insert_input {
-  action: String
-  changed_fields: jsonb
-  developer_id: String
-  table: String
-  timestamp: timestamptz
-}
-
-"""
-aggregate max on columns
-"""
-type events_max_fields {
-  action: String
-  developer_id: String
-  table: String
-  timestamp: timestamptz
-}
-
-"""
-aggregate min on columns
-"""
-type events_min_fields {
-  action: String
-  developer_id: String
-  table: String
-  timestamp: timestamptz
-}
-
-"""
-response of any mutation on the table "events"
-"""
-type events_mutation_response {
-  """
-  number of rows affected by the mutation
-  """
-  affected_rows: Int!
-
-  """
-  data from the rows affected by the mutation
-  """
-  returning: [events!]!
-}
-
-"""
-Ordering options when selecting data from "events".
-"""
-input events_order_by {
-  action: order_by
-  changed_fields: order_by
-  developer_id: order_by
-  table: order_by
-  timestamp: order_by
-}
-
-"""
-prepend existing jsonb value of filtered columns with new jsonb value
-"""
-input events_prepend_input {
-  changed_fields: jsonb
-}
-
-"""
-select columns of table "events"
-"""
-enum events_select_column {
-  """
-  column name
-  """
-  action
-
-  """
-  column name
-  """
-  changed_fields
-
-  """
-  column name
-  """
-  developer_id
-
-  """
-  column name
-  """
-  table
-
-  """
-  column name
-  """
-  timestamp
-}
-
-"""
-input type for updating data in table "events"
-"""
-input events_set_input {
-  action: String
-  changed_fields: jsonb
-  developer_id: String
-  table: String
-  timestamp: timestamptz
+type DialogactResult {
+  result: String!
 }
 
 """
@@ -1325,1298 +63,19 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
-scalar interval
-
-"""
-Boolean expression to compare columns of type "interval". All fields are combined with logical 'AND'.
-"""
-input interval_comparison_exp {
-  _eq: interval
-  _gt: interval
-  _gte: interval
-  _in: [interval!]
-  _is_null: Boolean
-  _lt: interval
-  _lte: interval
-  _neq: interval
-  _nin: [interval!]
-}
-
-scalar jsonb
-
-"""
-Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'.
-"""
-input jsonb_comparison_exp {
-  """
-  is the column contained in the given json value
-  """
-  _contained_in: jsonb
-
-  """
-  does the column contain the given json value at the top level
-  """
-  _contains: jsonb
-  _eq: jsonb
-  _gt: jsonb
-  _gte: jsonb
-
-  """
-  does the string exist as a top-level key in the column
-  """
-  _has_key: String
-
-  """
-  do all of these strings exist as top-level keys in the column
-  """
-  _has_keys_all: [String!]
-
-  """
-  do any of these strings exist as top-level keys in the column
-  """
-  _has_keys_any: [String!]
-  _in: [jsonb!]
-  _is_null: Boolean
-  _lt: jsonb
-  _lte: jsonb
-  _neq: jsonb
-  _nin: [jsonb!]
-}
-
-"""
-mutation root
-"""
-type mutation_root {
-  """
-  delete data from the table: "apps"
-  """
-  delete_apps(
-    """
-    filter the rows which have to be deleted
-    """
-    where: apps_bool_exp!
-  ): apps_mutation_response
-
-  """
-  delete data from the table: "developers"
-  """
-  delete_developers(
-    """
-    filter the rows which have to be deleted
-    """
-    where: developers_bool_exp!
-  ): developers_mutation_response
-
-  """
-  delete data from the table: "events"
-  """
-  delete_events(
-    """
-    filter the rows which have to be deleted
-    """
-    where: events_bool_exp!
-  ): events_mutation_response
-
-  """
-  delete data from the table: "tokens"
-  """
-  delete_tokens(
-    """
-    filter the rows which have to be deleted
-    """
-    where: tokens_bool_exp!
-  ): tokens_mutation_response
-
-  """
-  delete single row from the table: "tokens"
-  """
-  delete_tokens_by_pk(developer_id: Int!, slug: String!): tokens
-
-  """
-  delete data from the table: "usage"
-  """
-  delete_usage(
-    """
-    filter the rows which have to be deleted
-    """
-    where: usage_bool_exp!
-  ): usage_mutation_response
-
-  """
-  insert data into the table: "apps"
-  """
-  insert_apps(
-    """
-    the rows to be inserted
-    """
-    objects: [apps_insert_input!]!
-
-    """
-    on conflict condition
-    """
-    on_conflict: apps_on_conflict
-  ): apps_mutation_response
-
-  """
-  insert a single row into the table: "apps"
-  """
-  insert_apps_one(
-    """
-    the row to be inserted
-    """
-    object: apps_insert_input!
-
-    """
-    on conflict condition
-    """
-    on_conflict: apps_on_conflict
-  ): apps
-
-  """
-  insert data into the table: "developers"
-  """
-  insert_developers(
-    """
-    the rows to be inserted
-    """
-    objects: [developers_insert_input!]!
-
-    """
-    on conflict condition
-    """
-    on_conflict: developers_on_conflict
-  ): developers_mutation_response
-
-  """
-  insert a single row into the table: "developers"
-  """
-  insert_developers_one(
-    """
-    the row to be inserted
-    """
-    object: developers_insert_input!
-
-    """
-    on conflict condition
-    """
-    on_conflict: developers_on_conflict
-  ): developers
-
-  """
-  insert data into the table: "events"
-  """
-  insert_events(
-    """
-    the rows to be inserted
-    """
-    objects: [events_insert_input!]!
-  ): events_mutation_response
-
-  """
-  insert a single row into the table: "events"
-  """
-  insert_events_one(
-    """
-    the row to be inserted
-    """
-    object: events_insert_input!
-  ): events
-
-  """
-  insert data into the table: "tokens"
-  """
-  insert_tokens(
-    """
-    the rows to be inserted
-    """
-    objects: [tokens_insert_input!]!
-
-    """
-    on conflict condition
-    """
-    on_conflict: tokens_on_conflict
-  ): tokens_mutation_response
-
-  """
-  insert a single row into the table: "tokens"
-  """
-  insert_tokens_one(
-    """
-    the row to be inserted
-    """
-    object: tokens_insert_input!
-
-    """
-    on conflict condition
-    """
-    on_conflict: tokens_on_conflict
-  ): tokens
-
-  """
-  insert data into the table: "usage"
-  """
-  insert_usage(
-    """
-    the rows to be inserted
-    """
-    objects: [usage_insert_input!]!
-  ): usage_mutation_response
-
-  """
-  insert a single row into the table: "usage"
-  """
-  insert_usage_one(
-    """
-    the row to be inserted
-    """
-    object: usage_insert_input!
-  ): usage
-
-  """
-  update data of the table: "apps"
-  """
-  update_apps(
-    """
-    append existing jsonb value of filtered columns with new jsonb value
-    """
-    _append: apps_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: apps_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from
-    the end). throws an error if top level container is not an array
-    """
-    _delete_elem: apps_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: apps_delete_key_input
-
-    """
-    increments the numeric columns with given value of the filtered values
-    """
-    _inc: apps_inc_input
-
-    """
-    prepend existing jsonb value of filtered columns with new jsonb value
-    """
-    _prepend: apps_prepend_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: apps_set_input
-
-    """
-    filter the rows which have to be updated
-    """
-    where: apps_bool_exp!
-  ): apps_mutation_response
-
-  """
-  update data of the table: "developers"
-  """
-  update_developers(
-    """
-    append existing jsonb value of filtered columns with new jsonb value
-    """
-    _append: developers_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: developers_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from
-    the end). throws an error if top level container is not an array
-    """
-    _delete_elem: developers_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: developers_delete_key_input
-
-    """
-    increments the numeric columns with given value of the filtered values
-    """
-    _inc: developers_inc_input
-
-    """
-    prepend existing jsonb value of filtered columns with new jsonb value
-    """
-    _prepend: developers_prepend_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: developers_set_input
-
-    """
-    filter the rows which have to be updated
-    """
-    where: developers_bool_exp!
-  ): developers_mutation_response
-
-  """
-  update data of the table: "events"
-  """
-  update_events(
-    """
-    append existing jsonb value of filtered columns with new jsonb value
-    """
-    _append: events_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: events_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from
-    the end). throws an error if top level container is not an array
-    """
-    _delete_elem: events_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: events_delete_key_input
-
-    """
-    prepend existing jsonb value of filtered columns with new jsonb value
-    """
-    _prepend: events_prepend_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: events_set_input
-
-    """
-    filter the rows which have to be updated
-    """
-    where: events_bool_exp!
-  ): events_mutation_response
-
-  """
-  update data of the table: "tokens"
-  """
-  update_tokens(
-    """
-    increments the numeric columns with given value of the filtered values
-    """
-    _inc: tokens_inc_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: tokens_set_input
-
-    """
-    filter the rows which have to be updated
-    """
-    where: tokens_bool_exp!
-  ): tokens_mutation_response
-
-  """
-  update single row of the table: "tokens"
-  """
-  update_tokens_by_pk(
-    """
-    increments the numeric columns with given value of the filtered values
-    """
-    _inc: tokens_inc_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: tokens_set_input
-    pk_columns: tokens_pk_columns_input!
-  ): tokens
-
-  """
-  update data of the table: "usage"
-  """
-  update_usage(
-    """
-    increments the numeric columns with given value of the filtered values
-    """
-    _inc: usage_inc_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: usage_set_input
-
-    """
-    filter the rows which have to be updated
-    """
-    where: usage_bool_exp!
-  ): usage_mutation_response
-}
-
-scalar name
-
-"""
-Boolean expression to compare columns of type "name". All fields are combined with logical 'AND'.
-"""
-input name_comparison_exp {
-  _eq: name
-  _gt: name
-  _gte: name
-  _in: [name!]
-  _is_null: Boolean
-  _lt: name
-  _lte: name
-  _neq: name
-  _nin: [name!]
-}
-
-"""
-column ordering options
-"""
-enum order_by {
-  """
-  in ascending order, nulls last
-  """
-  asc
-
-  """
-  in ascending order, nulls first
-  """
-  asc_nulls_first
-
-  """
-  in ascending order, nulls last
-  """
-  asc_nulls_last
-
-  """
-  in descending order, nulls first
-  """
-  desc
-
-  """
-  in descending order, nulls first
-  """
-  desc_nulls_first
-
-  """
-  in descending order, nulls last
-  """
-  desc_nulls_last
-}
-
 type PairSimilarity {
-  """
-  Similarity sentences pair
-  """
+  """Similarity sentences pair"""
   candidate: String
 
-  """
-  Similarity sentences pair
-  """
+  """Similarity sentences pair"""
   input: String
 
-  """
-  Similarity score
-  """
+  """Similarity score"""
   score: Float
 }
 
 type ParaphraseResult {
   result: [String!]!
-}
-
-type query_root {
-  """
-  An array relationship
-  """
-  apps(
-    """
-    distinct select on columns
-    """
-    distinct_on: [apps_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [apps_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: apps_bool_exp
-  ): [apps!]!
-
-  """
-  An aggregate relationship
-  """
-  apps_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [apps_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [apps_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: apps_bool_exp
-  ): apps_aggregate!
-  callAnswer(
-    choices: [String!]! = []
-    context: String!
-    input: String!
-    minLength: Int! = 1
-  ): AnswerResult!
-  callChitchat(history: [Turn!]! = [], input: String!): ChitchatResult!
-  callDialogact(input: String!): DialogactResult!
-  callParaphrase(input: String!): ParaphraseResult!
-  callRelations(input: String!, relation: Relation!): RelationsResult!
-  callSensibility(history: [Turn!]!, input: [String!]!): SensibilityResult!
-  callSentiment(input: String!): SentimentResult!
-
-  """
-  Measure sentences similarity
-  """
-  callSimilarity(candidates: [String!]!, input: String!): SimilarityResult
-  callSpeak(input: String!): SpeakResult!
-
-  """
-  Classify topics
-  """
-  callTopics(
-    """
-    Allow multiple topics to be applicable
-    """
-    allow_multiple: Boolean!
-    input: String!
-    topics: [String!]!
-  ): TopicsResult!
-
-  """
-  Convert speech to text
-  """
-  callTranscribe(
-    """
-    Input string of bytes
-    """
-    input: Base64!
-  ): TranscribeResult!
-
-  """
-  fetch data from the table: "developers"
-  """
-  developers(
-    """
-    distinct select on columns
-    """
-    distinct_on: [developers_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [developers_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: developers_bool_exp
-  ): [developers!]!
-
-  """
-  fetch aggregated fields from the table: "developers"
-  """
-  developers_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [developers_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [developers_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: developers_bool_exp
-  ): developers_aggregate!
-
-  """
-  fetch data from the table: "events"
-  """
-  events(
-    """
-    distinct select on columns
-    """
-    distinct_on: [events_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [events_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: events_bool_exp
-  ): [events!]!
-
-  """
-  fetch aggregated fields from the table: "events"
-  """
-  events_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [events_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [events_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: events_bool_exp
-  ): events_aggregate!
-
-  """
-  execute function "me" which returns "developers"
-  """
-  me(
-    """
-    distinct select on columns
-    """
-    distinct_on: [developers_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [developers_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: developers_bool_exp
-  ): [developers!]!
-
-  """
-  execute function "me" and query aggregates on result of table type "developers"
-  """
-  me_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [developers_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [developers_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: developers_bool_exp
-  ): developers_aggregate!
-
-  """
-  fetch data from the table: "timescaledb_information.chunks"
-  """
-  timescaledb_information_chunks(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_chunks_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_chunks_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_chunks_bool_exp
-  ): [timescaledb_information_chunks!]!
-
-  """
-  fetch aggregated fields from the table: "timescaledb_information.chunks"
-  """
-  timescaledb_information_chunks_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_chunks_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_chunks_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_chunks_bool_exp
-  ): timescaledb_information_chunks_aggregate!
-
-  """
-  fetch data from the table: "timescaledb_information.compression_settings"
-  """
-  timescaledb_information_compression_settings(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_compression_settings_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_compression_settings_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_compression_settings_bool_exp
-  ): [timescaledb_information_compression_settings!]!
-
-  """
-  fetch aggregated fields from the table: "timescaledb_information.compression_settings"
-  """
-  timescaledb_information_compression_settings_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_compression_settings_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_compression_settings_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_compression_settings_bool_exp
-  ): timescaledb_information_compression_settings_aggregate!
-
-  """
-  fetch data from the table: "timescaledb_information.continuous_aggregates"
-  """
-  timescaledb_information_continuous_aggregates(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_continuous_aggregates_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_continuous_aggregates_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_continuous_aggregates_bool_exp
-  ): [timescaledb_information_continuous_aggregates!]!
-
-  """
-  fetch aggregated fields from the table: "timescaledb_information.continuous_aggregates"
-  """
-  timescaledb_information_continuous_aggregates_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_continuous_aggregates_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_continuous_aggregates_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_continuous_aggregates_bool_exp
-  ): timescaledb_information_continuous_aggregates_aggregate!
-
-  """
-  fetch data from the table: "timescaledb_information.hypertables"
-  """
-  timescaledb_information_hypertables(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_hypertables_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_hypertables_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_hypertables_bool_exp
-  ): [timescaledb_information_hypertables!]!
-
-  """
-  fetch aggregated fields from the table: "timescaledb_information.hypertables"
-  """
-  timescaledb_information_hypertables_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_hypertables_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_hypertables_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_hypertables_bool_exp
-  ): timescaledb_information_hypertables_aggregate!
-
-  """
-  fetch data from the table: "timescaledb_information.job_stats"
-  """
-  timescaledb_information_job_stats(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_job_stats_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_job_stats_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_job_stats_bool_exp
-  ): [timescaledb_information_job_stats!]!
-
-  """
-  fetch aggregated fields from the table: "timescaledb_information.job_stats"
-  """
-  timescaledb_information_job_stats_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_job_stats_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_job_stats_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_job_stats_bool_exp
-  ): timescaledb_information_job_stats_aggregate!
-
-  """
-  fetch data from the table: "timescaledb_information.jobs"
-  """
-  timescaledb_information_jobs(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_jobs_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_jobs_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_jobs_bool_exp
-  ): [timescaledb_information_jobs!]!
-
-  """
-  fetch aggregated fields from the table: "timescaledb_information.jobs"
-  """
-  timescaledb_information_jobs_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [timescaledb_information_jobs_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [timescaledb_information_jobs_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: timescaledb_information_jobs_bool_exp
-  ): timescaledb_information_jobs_aggregate!
-
-  """
-  An array relationship
-  """
-  tokens(
-    """
-    distinct select on columns
-    """
-    distinct_on: [tokens_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [tokens_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: tokens_bool_exp
-  ): [tokens!]!
-
-  """
-  An aggregate relationship
-  """
-  tokens_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [tokens_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [tokens_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: tokens_bool_exp
-  ): tokens_aggregate!
-
-  """
-  fetch data from the table: "tokens" using primary key columns
-  """
-  tokens_by_pk(developer_id: Int!, slug: String!): tokens
-
-  """
-  fetch data from the table: "usage"
-  """
-  usage(
-    """
-    distinct select on columns
-    """
-    distinct_on: [usage_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [usage_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: usage_bool_exp
-  ): [usage!]!
-
-  """
-  fetch aggregated fields from the table: "usage"
-  """
-  usage_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [usage_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [usage_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: usage_bool_exp
-  ): usage_aggregate!
-}
-
-scalar regtype
-
-"""
-Boolean expression to compare columns of type "regtype". All fields are combined with logical 'AND'.
-"""
-input regtype_comparison_exp {
-  _eq: regtype
-  _gt: regtype
-  _gte: regtype
-  _in: [regtype!]
-  _is_null: Boolean
-  _lt: regtype
-  _lte: regtype
-  _neq: regtype
-  _nin: [regtype!]
 }
 
 enum Relation {
@@ -2673,11 +132,1990 @@ type SentimentResult {
   result: [SentimentAnalysis!]!
 }
 
-"""
-Sentence similarity score
-"""
+"""Sentence similarity score"""
 type SimilarityResult {
   result: [PairSimilarity!]!
+}
+
+type SpeakResult {
+  result: String!
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""Topic scores"""
+type TopicScore {
+  score: Float!
+  topic: String!
+}
+
+"""Topic classification results"""
+type TopicsResult {
+  result: [TopicScore!]!
+}
+
+"""Output result"""
+type TranscribeResult {
+  """Transcription"""
+  result: String!
+}
+
+input Turn {
+  bot: String = null
+  user: String = null
+}
+
+scalar _name
+
+"""
+Boolean expression to compare columns of type "_name". All fields are combined with logical 'AND'.
+"""
+input _name_comparison_exp {
+  _eq: _name
+  _gt: _name
+  _gte: _name
+  _in: [_name!]
+  _is_null: Boolean
+  _lt: _name
+  _lte: _name
+  _neq: _name
+  _nin: [_name!]
+}
+
+"""
+columns and relationships of "apps"
+"""
+type apps {
+  created_at: timestamptz!
+
+  """An object relationship"""
+  developer: developers!
+  developer_id: Int!
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+  object_id: Int!
+  slug: String!
+}
+
+"""
+aggregated selection of "apps"
+"""
+type apps_aggregate {
+  aggregate: apps_aggregate_fields
+  nodes: [apps!]!
+}
+
+"""
+aggregate fields of "apps"
+"""
+type apps_aggregate_fields {
+  avg: apps_avg_fields
+  count(columns: [apps_select_column!], distinct: Boolean): Int!
+  max: apps_max_fields
+  min: apps_min_fields
+  stddev: apps_stddev_fields
+  stddev_pop: apps_stddev_pop_fields
+  stddev_samp: apps_stddev_samp_fields
+  sum: apps_sum_fields
+  var_pop: apps_var_pop_fields
+  var_samp: apps_var_samp_fields
+  variance: apps_variance_fields
+}
+
+"""
+order by aggregate values of table "apps"
+"""
+input apps_aggregate_order_by {
+  avg: apps_avg_order_by
+  count: order_by
+  max: apps_max_order_by
+  min: apps_min_order_by
+  stddev: apps_stddev_order_by
+  stddev_pop: apps_stddev_pop_order_by
+  stddev_samp: apps_stddev_samp_order_by
+  sum: apps_sum_order_by
+  var_pop: apps_var_pop_order_by
+  var_samp: apps_var_samp_order_by
+  variance: apps_variance_order_by
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input apps_append_input {
+  metadata: jsonb
+}
+
+"""
+input type for inserting array relation for remote table "apps"
+"""
+input apps_arr_rel_insert_input {
+  data: [apps_insert_input!]!
+
+  """on conflict condition"""
+  on_conflict: apps_on_conflict
+}
+
+"""aggregate avg on columns"""
+type apps_avg_fields {
+  developer_id: Float
+  object_id: Float
+}
+
+"""
+order by avg() on columns of table "apps"
+"""
+input apps_avg_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "apps". All fields are combined with a logical 'AND'.
+"""
+input apps_bool_exp {
+  _and: [apps_bool_exp!]
+  _not: apps_bool_exp
+  _or: [apps_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  developer: developers_bool_exp
+  developer_id: Int_comparison_exp
+  metadata: jsonb_comparison_exp
+  object_id: Int_comparison_exp
+  slug: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "apps"
+"""
+enum apps_constraint {
+  """unique or primary key constraint"""
+  apps_object_id_key
+
+  """unique or primary key constraint"""
+  apps_slug_key
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input apps_delete_at_path_input {
+  metadata: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input apps_delete_elem_input {
+  metadata: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input apps_delete_key_input {
+  metadata: String
+}
+
+"""
+input type for incrementing numeric columns in table "apps"
+"""
+input apps_inc_input {
+  developer_id: Int
+  object_id: Int
+}
+
+"""
+input type for inserting data into table "apps"
+"""
+input apps_insert_input {
+  created_at: timestamptz
+  developer: developers_obj_rel_insert_input
+  developer_id: Int
+  metadata: jsonb
+  object_id: Int
+  slug: String
+}
+
+"""aggregate max on columns"""
+type apps_max_fields {
+  created_at: timestamptz
+  developer_id: Int
+  object_id: Int
+  slug: String
+}
+
+"""
+order by max() on columns of table "apps"
+"""
+input apps_max_order_by {
+  created_at: order_by
+  developer_id: order_by
+  object_id: order_by
+  slug: order_by
+}
+
+"""aggregate min on columns"""
+type apps_min_fields {
+  created_at: timestamptz
+  developer_id: Int
+  object_id: Int
+  slug: String
+}
+
+"""
+order by min() on columns of table "apps"
+"""
+input apps_min_order_by {
+  created_at: order_by
+  developer_id: order_by
+  object_id: order_by
+  slug: order_by
+}
+
+"""
+response of any mutation on the table "apps"
+"""
+type apps_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [apps!]!
+}
+
+"""
+on conflict condition type for table "apps"
+"""
+input apps_on_conflict {
+  constraint: apps_constraint!
+  update_columns: [apps_update_column!]! = []
+  where: apps_bool_exp
+}
+
+"""Ordering options when selecting data from "apps"."""
+input apps_order_by {
+  created_at: order_by
+  developer: developers_order_by
+  developer_id: order_by
+  metadata: order_by
+  object_id: order_by
+  slug: order_by
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input apps_prepend_input {
+  metadata: jsonb
+}
+
+"""
+select columns of table "apps"
+"""
+enum apps_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  developer_id
+
+  """column name"""
+  metadata
+
+  """column name"""
+  object_id
+
+  """column name"""
+  slug
+}
+
+"""
+input type for updating data in table "apps"
+"""
+input apps_set_input {
+  created_at: timestamptz
+  developer_id: Int
+  metadata: jsonb
+  object_id: Int
+  slug: String
+}
+
+"""aggregate stddev on columns"""
+type apps_stddev_fields {
+  developer_id: Float
+  object_id: Float
+}
+
+"""
+order by stddev() on columns of table "apps"
+"""
+input apps_stddev_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type apps_stddev_pop_fields {
+  developer_id: Float
+  object_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "apps"
+"""
+input apps_stddev_pop_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type apps_stddev_samp_fields {
+  developer_id: Float
+  object_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "apps"
+"""
+input apps_stddev_samp_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+"""aggregate sum on columns"""
+type apps_sum_fields {
+  developer_id: Int
+  object_id: Int
+}
+
+"""
+order by sum() on columns of table "apps"
+"""
+input apps_sum_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+"""
+update columns of table "apps"
+"""
+enum apps_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  developer_id
+
+  """column name"""
+  metadata
+
+  """column name"""
+  object_id
+
+  """column name"""
+  slug
+}
+
+"""aggregate var_pop on columns"""
+type apps_var_pop_fields {
+  developer_id: Float
+  object_id: Float
+}
+
+"""
+order by var_pop() on columns of table "apps"
+"""
+input apps_var_pop_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type apps_var_samp_fields {
+  developer_id: Float
+  object_id: Float
+}
+
+"""
+order by var_samp() on columns of table "apps"
+"""
+input apps_var_samp_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+"""aggregate variance on columns"""
+type apps_variance_fields {
+  developer_id: Float
+  object_id: Float
+}
+
+"""
+order by variance() on columns of table "apps"
+"""
+input apps_variance_order_by {
+  developer_id: order_by
+  object_id: order_by
+}
+
+scalar bigint
+
+"""
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
+"""
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
+}
+
+"""
+columns and relationships of "developers"
+"""
+type developers {
+  active: Boolean!
+  api_key: String!
+
+  """An array relationship"""
+  apps(
+    """distinct select on columns"""
+    distinct_on: [apps_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apps_order_by!]
+
+    """filter the rows returned"""
+    where: apps_bool_exp
+  ): [apps!]!
+
+  """An aggregate relationship"""
+  apps_aggregate(
+    """distinct select on columns"""
+    distinct_on: [apps_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apps_order_by!]
+
+    """filter the rows returned"""
+    where: apps_bool_exp
+  ): apps_aggregate!
+  created_at: timestamptz!
+  email: String!
+  github_handle: String
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+  name: String!
+  object_id: Int!
+  onboarded: Boolean!
+
+  """An array relationship"""
+  tokens(
+    """distinct select on columns"""
+    distinct_on: [tokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tokens_order_by!]
+
+    """filter the rows returned"""
+    where: tokens_bool_exp
+  ): [tokens!]!
+
+  """An aggregate relationship"""
+  tokens_aggregate(
+    """distinct select on columns"""
+    distinct_on: [tokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tokens_order_by!]
+
+    """filter the rows returned"""
+    where: tokens_bool_exp
+  ): tokens_aggregate!
+  uid: String!
+
+  """An array relationship"""
+  usages(
+    """distinct select on columns"""
+    distinct_on: [usage_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [usage_order_by!]
+
+    """filter the rows returned"""
+    where: usage_bool_exp
+  ): [usage!]!
+
+  """An aggregate relationship"""
+  usages_aggregate(
+    """distinct select on columns"""
+    distinct_on: [usage_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [usage_order_by!]
+
+    """filter the rows returned"""
+    where: usage_bool_exp
+  ): usage_aggregate!
+}
+
+"""
+aggregated selection of "developers"
+"""
+type developers_aggregate {
+  aggregate: developers_aggregate_fields
+  nodes: [developers!]!
+}
+
+"""
+aggregate fields of "developers"
+"""
+type developers_aggregate_fields {
+  avg: developers_avg_fields
+  count(columns: [developers_select_column!], distinct: Boolean): Int!
+  max: developers_max_fields
+  min: developers_min_fields
+  stddev: developers_stddev_fields
+  stddev_pop: developers_stddev_pop_fields
+  stddev_samp: developers_stddev_samp_fields
+  sum: developers_sum_fields
+  var_pop: developers_var_pop_fields
+  var_samp: developers_var_samp_fields
+  variance: developers_variance_fields
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input developers_append_input {
+  metadata: jsonb
+}
+
+"""aggregate avg on columns"""
+type developers_avg_fields {
+  object_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "developers". All fields are combined with a logical 'AND'.
+"""
+input developers_bool_exp {
+  _and: [developers_bool_exp!]
+  _not: developers_bool_exp
+  _or: [developers_bool_exp!]
+  active: Boolean_comparison_exp
+  api_key: String_comparison_exp
+  apps: apps_bool_exp
+  created_at: timestamptz_comparison_exp
+  email: String_comparison_exp
+  github_handle: String_comparison_exp
+  metadata: jsonb_comparison_exp
+  name: String_comparison_exp
+  object_id: Int_comparison_exp
+  onboarded: Boolean_comparison_exp
+  tokens: tokens_bool_exp
+  uid: String_comparison_exp
+  usages: usage_bool_exp
+}
+
+"""
+unique or primary key constraints on table "developers"
+"""
+enum developers_constraint {
+  """unique or primary key constraint"""
+  developers_api_key_key
+
+  """unique or primary key constraint"""
+  developers_email_key
+
+  """unique or primary key constraint"""
+  developers_github_handle_key
+
+  """unique or primary key constraint"""
+  developers_object_id_key
+
+  """unique or primary key constraint"""
+  developers_uid_key
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input developers_delete_at_path_input {
+  metadata: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input developers_delete_elem_input {
+  metadata: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input developers_delete_key_input {
+  metadata: String
+}
+
+"""
+input type for incrementing numeric columns in table "developers"
+"""
+input developers_inc_input {
+  object_id: Int
+}
+
+"""
+input type for inserting data into table "developers"
+"""
+input developers_insert_input {
+  active: Boolean
+  api_key: String
+  apps: apps_arr_rel_insert_input
+  created_at: timestamptz
+  email: String
+  github_handle: String
+  metadata: jsonb
+  name: String
+  object_id: Int
+  onboarded: Boolean
+  tokens: tokens_arr_rel_insert_input
+  uid: String
+  usages: usage_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type developers_max_fields {
+  api_key: String
+  created_at: timestamptz
+  email: String
+  github_handle: String
+  name: String
+  object_id: Int
+  uid: String
+}
+
+"""aggregate min on columns"""
+type developers_min_fields {
+  api_key: String
+  created_at: timestamptz
+  email: String
+  github_handle: String
+  name: String
+  object_id: Int
+  uid: String
+}
+
+"""
+response of any mutation on the table "developers"
+"""
+type developers_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [developers!]!
+}
+
+"""
+input type for inserting object relation for remote table "developers"
+"""
+input developers_obj_rel_insert_input {
+  data: developers_insert_input!
+
+  """on conflict condition"""
+  on_conflict: developers_on_conflict
+}
+
+"""
+on conflict condition type for table "developers"
+"""
+input developers_on_conflict {
+  constraint: developers_constraint!
+  update_columns: [developers_update_column!]! = []
+  where: developers_bool_exp
+}
+
+"""Ordering options when selecting data from "developers"."""
+input developers_order_by {
+  active: order_by
+  api_key: order_by
+  apps_aggregate: apps_aggregate_order_by
+  created_at: order_by
+  email: order_by
+  github_handle: order_by
+  metadata: order_by
+  name: order_by
+  object_id: order_by
+  onboarded: order_by
+  tokens_aggregate: tokens_aggregate_order_by
+  uid: order_by
+  usages_aggregate: usage_aggregate_order_by
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input developers_prepend_input {
+  metadata: jsonb
+}
+
+"""
+select columns of table "developers"
+"""
+enum developers_select_column {
+  """column name"""
+  active
+
+  """column name"""
+  api_key
+
+  """column name"""
+  created_at
+
+  """column name"""
+  email
+
+  """column name"""
+  github_handle
+
+  """column name"""
+  metadata
+
+  """column name"""
+  name
+
+  """column name"""
+  object_id
+
+  """column name"""
+  onboarded
+
+  """column name"""
+  uid
+}
+
+"""
+input type for updating data in table "developers"
+"""
+input developers_set_input {
+  active: Boolean
+  api_key: String
+  created_at: timestamptz
+  email: String
+  github_handle: String
+  metadata: jsonb
+  name: String
+  object_id: Int
+  onboarded: Boolean
+  uid: String
+}
+
+"""aggregate stddev on columns"""
+type developers_stddev_fields {
+  object_id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type developers_stddev_pop_fields {
+  object_id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type developers_stddev_samp_fields {
+  object_id: Float
+}
+
+"""aggregate sum on columns"""
+type developers_sum_fields {
+  object_id: Int
+}
+
+"""
+update columns of table "developers"
+"""
+enum developers_update_column {
+  """column name"""
+  active
+
+  """column name"""
+  api_key
+
+  """column name"""
+  created_at
+
+  """column name"""
+  email
+
+  """column name"""
+  github_handle
+
+  """column name"""
+  metadata
+
+  """column name"""
+  name
+
+  """column name"""
+  object_id
+
+  """column name"""
+  onboarded
+
+  """column name"""
+  uid
+}
+
+"""aggregate var_pop on columns"""
+type developers_var_pop_fields {
+  object_id: Float
+}
+
+"""aggregate var_samp on columns"""
+type developers_var_samp_fields {
+  object_id: Float
+}
+
+"""aggregate variance on columns"""
+type developers_variance_fields {
+  object_id: Float
+}
+
+"""
+columns and relationships of "events"
+"""
+type events {
+  action: String
+  changed_fields(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  developer_id: String
+  table: String
+  timestamp: timestamptz
+}
+
+"""
+aggregated selection of "events"
+"""
+type events_aggregate {
+  aggregate: events_aggregate_fields
+  nodes: [events!]!
+}
+
+"""
+aggregate fields of "events"
+"""
+type events_aggregate_fields {
+  count(columns: [events_select_column!], distinct: Boolean): Int!
+  max: events_max_fields
+  min: events_min_fields
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input events_append_input {
+  changed_fields: jsonb
+}
+
+"""
+Boolean expression to filter rows from the table "events". All fields are combined with a logical 'AND'.
+"""
+input events_bool_exp {
+  _and: [events_bool_exp!]
+  _not: events_bool_exp
+  _or: [events_bool_exp!]
+  action: String_comparison_exp
+  changed_fields: jsonb_comparison_exp
+  developer_id: String_comparison_exp
+  table: String_comparison_exp
+  timestamp: timestamptz_comparison_exp
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input events_delete_at_path_input {
+  changed_fields: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input events_delete_elem_input {
+  changed_fields: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input events_delete_key_input {
+  changed_fields: String
+}
+
+"""
+input type for inserting data into table "events"
+"""
+input events_insert_input {
+  action: String
+  changed_fields: jsonb
+  developer_id: String
+  table: String
+  timestamp: timestamptz
+}
+
+"""aggregate max on columns"""
+type events_max_fields {
+  action: String
+  developer_id: String
+  table: String
+  timestamp: timestamptz
+}
+
+"""aggregate min on columns"""
+type events_min_fields {
+  action: String
+  developer_id: String
+  table: String
+  timestamp: timestamptz
+}
+
+"""
+response of any mutation on the table "events"
+"""
+type events_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [events!]!
+}
+
+"""Ordering options when selecting data from "events"."""
+input events_order_by {
+  action: order_by
+  changed_fields: order_by
+  developer_id: order_by
+  table: order_by
+  timestamp: order_by
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input events_prepend_input {
+  changed_fields: jsonb
+}
+
+"""
+select columns of table "events"
+"""
+enum events_select_column {
+  """column name"""
+  action
+
+  """column name"""
+  changed_fields
+
+  """column name"""
+  developer_id
+
+  """column name"""
+  table
+
+  """column name"""
+  timestamp
+}
+
+"""
+input type for updating data in table "events"
+"""
+input events_set_input {
+  action: String
+  changed_fields: jsonb
+  developer_id: String
+  table: String
+  timestamp: timestamptz
+}
+
+scalar interval
+
+"""
+Boolean expression to compare columns of type "interval". All fields are combined with logical 'AND'.
+"""
+input interval_comparison_exp {
+  _eq: interval
+  _gt: interval
+  _gte: interval
+  _in: [interval!]
+  _is_null: Boolean
+  _lt: interval
+  _lte: interval
+  _neq: interval
+  _nin: [interval!]
+}
+
+scalar jsonb
+
+"""
+Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'.
+"""
+input jsonb_comparison_exp {
+  """is the column contained in the given json value"""
+  _contained_in: jsonb
+
+  """does the column contain the given json value at the top level"""
+  _contains: jsonb
+  _eq: jsonb
+  _gt: jsonb
+  _gte: jsonb
+
+  """does the string exist as a top-level key in the column"""
+  _has_key: String
+
+  """do all of these strings exist as top-level keys in the column"""
+  _has_keys_all: [String!]
+
+  """do any of these strings exist as top-level keys in the column"""
+  _has_keys_any: [String!]
+  _in: [jsonb!]
+  _is_null: Boolean
+  _lt: jsonb
+  _lte: jsonb
+  _neq: jsonb
+  _nin: [jsonb!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "apps"
+  """
+  delete_apps(
+    """filter the rows which have to be deleted"""
+    where: apps_bool_exp!
+  ): apps_mutation_response
+
+  """
+  delete data from the table: "developers"
+  """
+  delete_developers(
+    """filter the rows which have to be deleted"""
+    where: developers_bool_exp!
+  ): developers_mutation_response
+
+  """
+  delete data from the table: "events"
+  """
+  delete_events(
+    """filter the rows which have to be deleted"""
+    where: events_bool_exp!
+  ): events_mutation_response
+
+  """
+  delete data from the table: "tokens"
+  """
+  delete_tokens(
+    """filter the rows which have to be deleted"""
+    where: tokens_bool_exp!
+  ): tokens_mutation_response
+
+  """
+  delete single row from the table: "tokens"
+  """
+  delete_tokens_by_pk(developer_id: Int!, slug: String!): tokens
+
+  """
+  delete data from the table: "usage"
+  """
+  delete_usage(
+    """filter the rows which have to be deleted"""
+    where: usage_bool_exp!
+  ): usage_mutation_response
+
+  """
+  insert data into the table: "apps"
+  """
+  insert_apps(
+    """the rows to be inserted"""
+    objects: [apps_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: apps_on_conflict
+  ): apps_mutation_response
+
+  """
+  insert a single row into the table: "apps"
+  """
+  insert_apps_one(
+    """the row to be inserted"""
+    object: apps_insert_input!
+
+    """on conflict condition"""
+    on_conflict: apps_on_conflict
+  ): apps
+
+  """
+  insert data into the table: "developers"
+  """
+  insert_developers(
+    """the rows to be inserted"""
+    objects: [developers_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: developers_on_conflict
+  ): developers_mutation_response
+
+  """
+  insert a single row into the table: "developers"
+  """
+  insert_developers_one(
+    """the row to be inserted"""
+    object: developers_insert_input!
+
+    """on conflict condition"""
+    on_conflict: developers_on_conflict
+  ): developers
+
+  """
+  insert data into the table: "events"
+  """
+  insert_events(
+    """the rows to be inserted"""
+    objects: [events_insert_input!]!
+  ): events_mutation_response
+
+  """
+  insert a single row into the table: "events"
+  """
+  insert_events_one(
+    """the row to be inserted"""
+    object: events_insert_input!
+  ): events
+
+  """
+  insert data into the table: "tokens"
+  """
+  insert_tokens(
+    """the rows to be inserted"""
+    objects: [tokens_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: tokens_on_conflict
+  ): tokens_mutation_response
+
+  """
+  insert a single row into the table: "tokens"
+  """
+  insert_tokens_one(
+    """the row to be inserted"""
+    object: tokens_insert_input!
+
+    """on conflict condition"""
+    on_conflict: tokens_on_conflict
+  ): tokens
+
+  """
+  insert data into the table: "usage"
+  """
+  insert_usage(
+    """the rows to be inserted"""
+    objects: [usage_insert_input!]!
+  ): usage_mutation_response
+
+  """
+  insert a single row into the table: "usage"
+  """
+  insert_usage_one(
+    """the row to be inserted"""
+    object: usage_insert_input!
+  ): usage
+
+  """
+  update data of the table: "apps"
+  """
+  update_apps(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: apps_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: apps_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: apps_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: apps_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: apps_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: apps_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: apps_set_input
+
+    """filter the rows which have to be updated"""
+    where: apps_bool_exp!
+  ): apps_mutation_response
+
+  """
+  update data of the table: "developers"
+  """
+  update_developers(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: developers_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: developers_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: developers_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: developers_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: developers_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: developers_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: developers_set_input
+
+    """filter the rows which have to be updated"""
+    where: developers_bool_exp!
+  ): developers_mutation_response
+
+  """
+  update data of the table: "events"
+  """
+  update_events(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: events_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: events_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: events_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: events_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: events_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: events_set_input
+
+    """filter the rows which have to be updated"""
+    where: events_bool_exp!
+  ): events_mutation_response
+
+  """
+  update data of the table: "tokens"
+  """
+  update_tokens(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: tokens_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: tokens_set_input
+
+    """filter the rows which have to be updated"""
+    where: tokens_bool_exp!
+  ): tokens_mutation_response
+
+  """
+  update single row of the table: "tokens"
+  """
+  update_tokens_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: tokens_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: tokens_set_input
+    pk_columns: tokens_pk_columns_input!
+  ): tokens
+
+  """
+  update data of the table: "usage"
+  """
+  update_usage(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: usage_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: usage_set_input
+
+    """filter the rows which have to be updated"""
+    where: usage_bool_exp!
+  ): usage_mutation_response
+}
+
+scalar name
+
+"""
+Boolean expression to compare columns of type "name". All fields are combined with logical 'AND'.
+"""
+input name_comparison_exp {
+  _eq: name
+  _gt: name
+  _gte: name
+  _in: [name!]
+  _is_null: Boolean
+  _lt: name
+  _lte: name
+  _neq: name
+  _nin: [name!]
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type query_root {
+  """An array relationship"""
+  apps(
+    """distinct select on columns"""
+    distinct_on: [apps_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apps_order_by!]
+
+    """filter the rows returned"""
+    where: apps_bool_exp
+  ): [apps!]!
+
+  """An aggregate relationship"""
+  apps_aggregate(
+    """distinct select on columns"""
+    distinct_on: [apps_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apps_order_by!]
+
+    """filter the rows returned"""
+    where: apps_bool_exp
+  ): apps_aggregate!
+  callAnswer(choices: [String!]! = [], context: String!, input: String!, minLength: Int! = 1): AnswerResult!
+  callChitchat(history: [Turn!]! = [], input: String!): ChitchatResult!
+  callDialogact(input: String!): DialogactResult!
+  callParaphrase(input: String!): ParaphraseResult!
+  callRelations(input: String!, relation: Relation!): RelationsResult!
+  callSensibility(history: [Turn!]!, input: [String!]!): SensibilityResult!
+  callSentiment(input: String!): SentimentResult!
+
+  """Measure sentences similarity"""
+  callSimilarity(candidates: [String!]!, input: String!): SimilarityResult
+  callSpeak(input: String!): SpeakResult!
+
+  """Classify topics"""
+  callTopics(
+    """Allow multiple topics to be applicable"""
+    allow_multiple: Boolean!
+    input: String!
+    topics: [String!]!
+  ): TopicsResult!
+
+  """Convert speech to text"""
+  callTranscribe(
+    """Input string of bytes"""
+    input: Base64!
+  ): TranscribeResult!
+
+  """
+  fetch data from the table: "developers"
+  """
+  developers(
+    """distinct select on columns"""
+    distinct_on: [developers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [developers_order_by!]
+
+    """filter the rows returned"""
+    where: developers_bool_exp
+  ): [developers!]!
+
+  """
+  fetch aggregated fields from the table: "developers"
+  """
+  developers_aggregate(
+    """distinct select on columns"""
+    distinct_on: [developers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [developers_order_by!]
+
+    """filter the rows returned"""
+    where: developers_bool_exp
+  ): developers_aggregate!
+
+  """
+  fetch data from the table: "events"
+  """
+  events(
+    """distinct select on columns"""
+    distinct_on: [events_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [events_order_by!]
+
+    """filter the rows returned"""
+    where: events_bool_exp
+  ): [events!]!
+
+  """
+  fetch aggregated fields from the table: "events"
+  """
+  events_aggregate(
+    """distinct select on columns"""
+    distinct_on: [events_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [events_order_by!]
+
+    """filter the rows returned"""
+    where: events_bool_exp
+  ): events_aggregate!
+
+  """
+  execute function "me" which returns "developers"
+  """
+  me(
+    """distinct select on columns"""
+    distinct_on: [developers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [developers_order_by!]
+
+    """filter the rows returned"""
+    where: developers_bool_exp
+  ): [developers!]!
+
+  """
+  execute function "me" and query aggregates on result of table type "developers"
+  """
+  me_aggregate(
+    """distinct select on columns"""
+    distinct_on: [developers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [developers_order_by!]
+
+    """filter the rows returned"""
+    where: developers_bool_exp
+  ): developers_aggregate!
+
+  """
+  fetch data from the table: "timescaledb_information.chunks"
+  """
+  timescaledb_information_chunks(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_chunks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_chunks_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_chunks_bool_exp
+  ): [timescaledb_information_chunks!]!
+
+  """
+  fetch aggregated fields from the table: "timescaledb_information.chunks"
+  """
+  timescaledb_information_chunks_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_chunks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_chunks_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_chunks_bool_exp
+  ): timescaledb_information_chunks_aggregate!
+
+  """
+  fetch data from the table: "timescaledb_information.compression_settings"
+  """
+  timescaledb_information_compression_settings(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_compression_settings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_compression_settings_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_compression_settings_bool_exp
+  ): [timescaledb_information_compression_settings!]!
+
+  """
+  fetch aggregated fields from the table: "timescaledb_information.compression_settings"
+  """
+  timescaledb_information_compression_settings_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_compression_settings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_compression_settings_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_compression_settings_bool_exp
+  ): timescaledb_information_compression_settings_aggregate!
+
+  """
+  fetch data from the table: "timescaledb_information.continuous_aggregates"
+  """
+  timescaledb_information_continuous_aggregates(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_continuous_aggregates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_continuous_aggregates_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_continuous_aggregates_bool_exp
+  ): [timescaledb_information_continuous_aggregates!]!
+
+  """
+  fetch aggregated fields from the table: "timescaledb_information.continuous_aggregates"
+  """
+  timescaledb_information_continuous_aggregates_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_continuous_aggregates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_continuous_aggregates_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_continuous_aggregates_bool_exp
+  ): timescaledb_information_continuous_aggregates_aggregate!
+
+  """
+  fetch data from the table: "timescaledb_information.hypertables"
+  """
+  timescaledb_information_hypertables(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_hypertables_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_hypertables_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_hypertables_bool_exp
+  ): [timescaledb_information_hypertables!]!
+
+  """
+  fetch aggregated fields from the table: "timescaledb_information.hypertables"
+  """
+  timescaledb_information_hypertables_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_hypertables_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_hypertables_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_hypertables_bool_exp
+  ): timescaledb_information_hypertables_aggregate!
+
+  """
+  fetch data from the table: "timescaledb_information.job_stats"
+  """
+  timescaledb_information_job_stats(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_job_stats_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_job_stats_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_job_stats_bool_exp
+  ): [timescaledb_information_job_stats!]!
+
+  """
+  fetch aggregated fields from the table: "timescaledb_information.job_stats"
+  """
+  timescaledb_information_job_stats_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_job_stats_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_job_stats_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_job_stats_bool_exp
+  ): timescaledb_information_job_stats_aggregate!
+
+  """
+  fetch data from the table: "timescaledb_information.jobs"
+  """
+  timescaledb_information_jobs(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_jobs_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_jobs_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_jobs_bool_exp
+  ): [timescaledb_information_jobs!]!
+
+  """
+  fetch aggregated fields from the table: "timescaledb_information.jobs"
+  """
+  timescaledb_information_jobs_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timescaledb_information_jobs_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timescaledb_information_jobs_order_by!]
+
+    """filter the rows returned"""
+    where: timescaledb_information_jobs_bool_exp
+  ): timescaledb_information_jobs_aggregate!
+
+  """An array relationship"""
+  tokens(
+    """distinct select on columns"""
+    distinct_on: [tokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tokens_order_by!]
+
+    """filter the rows returned"""
+    where: tokens_bool_exp
+  ): [tokens!]!
+
+  """An aggregate relationship"""
+  tokens_aggregate(
+    """distinct select on columns"""
+    distinct_on: [tokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tokens_order_by!]
+
+    """filter the rows returned"""
+    where: tokens_bool_exp
+  ): tokens_aggregate!
+
+  """fetch data from the table: "tokens" using primary key columns"""
+  tokens_by_pk(developer_id: Int!, slug: String!): tokens
+
+  """
+  fetch data from the table: "usage"
+  """
+  usage(
+    """distinct select on columns"""
+    distinct_on: [usage_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [usage_order_by!]
+
+    """filter the rows returned"""
+    where: usage_bool_exp
+  ): [usage!]!
+
+  """
+  fetch aggregated fields from the table: "usage"
+  """
+  usage_aggregate(
+    """distinct select on columns"""
+    distinct_on: [usage_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [usage_order_by!]
+
+    """filter the rows returned"""
+    where: usage_bool_exp
+  ): usage_aggregate!
+}
+
+scalar regtype
+
+"""
+Boolean expression to compare columns of type "regtype". All fields are combined with logical 'AND'.
+"""
+input regtype_comparison_exp {
+  _eq: regtype
+  _gt: regtype
+  _gte: regtype
+  _in: [regtype!]
+  _is_null: Boolean
+  _lt: regtype
+  _lte: regtype
+  _neq: regtype
+  _nin: [regtype!]
 }
 
 scalar smallint
@@ -2697,133 +2135,40 @@ input smallint_comparison_exp {
   _nin: [smallint!]
 }
 
-type SpeakResult {
-  result: String!
-}
-
-"""
-Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
-"""
-input String_comparison_exp {
-  _eq: String
-  _gt: String
-  _gte: String
-
-  """
-  does the column match the given case-insensitive pattern
-  """
-  _ilike: String
-  _in: [String!]
-
-  """
-  does the column match the given POSIX regular expression, case insensitive
-  """
-  _iregex: String
-  _is_null: Boolean
-
-  """
-  does the column match the given pattern
-  """
-  _like: String
-  _lt: String
-  _lte: String
-  _neq: String
-
-  """
-  does the column NOT match the given case-insensitive pattern
-  """
-  _nilike: String
-  _nin: [String!]
-
-  """
-  does the column NOT match the given POSIX regular expression, case insensitive
-  """
-  _niregex: String
-
-  """
-  does the column NOT match the given pattern
-  """
-  _nlike: String
-
-  """
-  does the column NOT match the given POSIX regular expression, case sensitive
-  """
-  _nregex: String
-
-  """
-  does the column NOT match the given SQL regular expression
-  """
-  _nsimilar: String
-
-  """
-  does the column match the given POSIX regular expression, case sensitive
-  """
-  _regex: String
-
-  """
-  does the column match the given SQL regular expression
-  """
-  _similar: String
-}
-
 type subscription_root {
-  """
-  An array relationship
-  """
+  """An array relationship"""
   apps(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [apps_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [apps_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: apps_bool_exp
   ): [apps!]!
 
-  """
-  An aggregate relationship
-  """
+  """An aggregate relationship"""
   apps_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [apps_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [apps_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: apps_bool_exp
   ): apps_aggregate!
 
@@ -2831,29 +2176,19 @@ type subscription_root {
   fetch data from the table: "developers"
   """
   developers(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [developers_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [developers_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: developers_bool_exp
   ): [developers!]!
 
@@ -2861,29 +2196,19 @@ type subscription_root {
   fetch aggregated fields from the table: "developers"
   """
   developers_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [developers_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [developers_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: developers_bool_exp
   ): developers_aggregate!
 
@@ -2891,29 +2216,19 @@ type subscription_root {
   fetch data from the table: "events"
   """
   events(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [events_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [events_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: events_bool_exp
   ): [events!]!
 
@@ -2921,29 +2236,19 @@ type subscription_root {
   fetch aggregated fields from the table: "events"
   """
   events_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [events_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [events_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: events_bool_exp
   ): events_aggregate!
 
@@ -2951,29 +2256,19 @@ type subscription_root {
   execute function "me" which returns "developers"
   """
   me(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [developers_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [developers_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: developers_bool_exp
   ): [developers!]!
 
@@ -2981,29 +2276,19 @@ type subscription_root {
   execute function "me" and query aggregates on result of table type "developers"
   """
   me_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [developers_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [developers_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: developers_bool_exp
   ): developers_aggregate!
 
@@ -3011,29 +2296,19 @@ type subscription_root {
   fetch data from the table: "timescaledb_information.chunks"
   """
   timescaledb_information_chunks(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_chunks_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_chunks_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_chunks_bool_exp
   ): [timescaledb_information_chunks!]!
 
@@ -3041,29 +2316,19 @@ type subscription_root {
   fetch aggregated fields from the table: "timescaledb_information.chunks"
   """
   timescaledb_information_chunks_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_chunks_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_chunks_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_chunks_bool_exp
   ): timescaledb_information_chunks_aggregate!
 
@@ -3071,29 +2336,19 @@ type subscription_root {
   fetch data from the table: "timescaledb_information.compression_settings"
   """
   timescaledb_information_compression_settings(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_compression_settings_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_compression_settings_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_compression_settings_bool_exp
   ): [timescaledb_information_compression_settings!]!
 
@@ -3101,29 +2356,19 @@ type subscription_root {
   fetch aggregated fields from the table: "timescaledb_information.compression_settings"
   """
   timescaledb_information_compression_settings_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_compression_settings_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_compression_settings_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_compression_settings_bool_exp
   ): timescaledb_information_compression_settings_aggregate!
 
@@ -3131,29 +2376,19 @@ type subscription_root {
   fetch data from the table: "timescaledb_information.continuous_aggregates"
   """
   timescaledb_information_continuous_aggregates(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_continuous_aggregates_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_continuous_aggregates_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_continuous_aggregates_bool_exp
   ): [timescaledb_information_continuous_aggregates!]!
 
@@ -3161,29 +2396,19 @@ type subscription_root {
   fetch aggregated fields from the table: "timescaledb_information.continuous_aggregates"
   """
   timescaledb_information_continuous_aggregates_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_continuous_aggregates_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_continuous_aggregates_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_continuous_aggregates_bool_exp
   ): timescaledb_information_continuous_aggregates_aggregate!
 
@@ -3191,29 +2416,19 @@ type subscription_root {
   fetch data from the table: "timescaledb_information.hypertables"
   """
   timescaledb_information_hypertables(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_hypertables_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_hypertables_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_hypertables_bool_exp
   ): [timescaledb_information_hypertables!]!
 
@@ -3221,29 +2436,19 @@ type subscription_root {
   fetch aggregated fields from the table: "timescaledb_information.hypertables"
   """
   timescaledb_information_hypertables_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_hypertables_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_hypertables_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_hypertables_bool_exp
   ): timescaledb_information_hypertables_aggregate!
 
@@ -3251,29 +2456,19 @@ type subscription_root {
   fetch data from the table: "timescaledb_information.job_stats"
   """
   timescaledb_information_job_stats(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_job_stats_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_job_stats_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_job_stats_bool_exp
   ): [timescaledb_information_job_stats!]!
 
@@ -3281,29 +2476,19 @@ type subscription_root {
   fetch aggregated fields from the table: "timescaledb_information.job_stats"
   """
   timescaledb_information_job_stats_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_job_stats_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_job_stats_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_job_stats_bool_exp
   ): timescaledb_information_job_stats_aggregate!
 
@@ -3311,29 +2496,19 @@ type subscription_root {
   fetch data from the table: "timescaledb_information.jobs"
   """
   timescaledb_information_jobs(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_jobs_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_jobs_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_jobs_bool_exp
   ): [timescaledb_information_jobs!]!
 
@@ -3341,124 +2516,78 @@ type subscription_root {
   fetch aggregated fields from the table: "timescaledb_information.jobs"
   """
   timescaledb_information_jobs_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [timescaledb_information_jobs_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [timescaledb_information_jobs_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: timescaledb_information_jobs_bool_exp
   ): timescaledb_information_jobs_aggregate!
 
-  """
-  An array relationship
-  """
+  """An array relationship"""
   tokens(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [tokens_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [tokens_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: tokens_bool_exp
   ): [tokens!]!
 
-  """
-  An aggregate relationship
-  """
+  """An aggregate relationship"""
   tokens_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [tokens_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [tokens_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: tokens_bool_exp
   ): tokens_aggregate!
 
-  """
-  fetch data from the table: "tokens" using primary key columns
-  """
+  """fetch data from the table: "tokens" using primary key columns"""
   tokens_by_pk(developer_id: Int!, slug: String!): tokens
 
   """
   fetch data from the table: "usage"
   """
   usage(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [usage_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [usage_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: usage_bool_exp
   ): [usage!]!
 
@@ -3466,29 +2595,19 @@ type subscription_root {
   fetch aggregated fields from the table: "usage"
   """
   usage_aggregate(
-    """
-    distinct select on columns
-    """
+    """distinct select on columns"""
     distinct_on: [usage_select_column!]
 
-    """
-    limit the number of rows returned
-    """
+    """limit the number of rows returned"""
     limit: Int
 
-    """
-    skip the first n rows. Use only with order_by
-    """
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    """
-    sort the rows by one or more columns
-    """
+    """sort the rows by one or more columns"""
     order_by: [usage_order_by!]
 
-    """
-    filter the rows returned
-    """
+    """filter the rows returned"""
     where: usage_bool_exp
   ): usage_aggregate!
 }
@@ -3525,10 +2644,7 @@ aggregate fields of "timescaledb_information.chunks"
 """
 type timescaledb_information_chunks_aggregate_fields {
   avg: timescaledb_information_chunks_avg_fields
-  count(
-    columns: [timescaledb_information_chunks_select_column!]
-    distinct: Boolean
-  ): Int!
+  count(columns: [timescaledb_information_chunks_select_column!], distinct: Boolean): Int!
   max: timescaledb_information_chunks_max_fields
   min: timescaledb_information_chunks_min_fields
   stddev: timescaledb_information_chunks_stddev_fields
@@ -3540,17 +2656,14 @@ type timescaledb_information_chunks_aggregate_fields {
   variance: timescaledb_information_chunks_variance_fields
 }
 
-"""
-aggregate avg on columns
-"""
+"""aggregate avg on columns"""
 type timescaledb_information_chunks_avg_fields {
   range_end_integer: Float
   range_start_integer: Float
 }
 
 """
-Boolean expression to filter rows from the table
-"timescaledb_information.chunks". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "timescaledb_information.chunks". All fields are combined with a logical 'AND'.
 """
 input timescaledb_information_chunks_bool_exp {
   _and: [timescaledb_information_chunks_bool_exp!]
@@ -3571,9 +2684,7 @@ input timescaledb_information_chunks_bool_exp {
   range_start_integer: bigint_comparison_exp
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type timescaledb_information_chunks_max_fields {
   range_end: timestamptz
   range_end_integer: bigint
@@ -3581,9 +2692,7 @@ type timescaledb_information_chunks_max_fields {
   range_start_integer: bigint
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type timescaledb_information_chunks_min_fields {
   range_end: timestamptz
   range_end_integer: bigint
@@ -3614,123 +2723,83 @@ input timescaledb_information_chunks_order_by {
 select columns of table "timescaledb_information.chunks"
 """
 enum timescaledb_information_chunks_select_column {
-  """
-  column name
-  """
+  """column name"""
   chunk_name
 
-  """
-  column name
-  """
+  """column name"""
   chunk_schema
 
-  """
-  column name
-  """
+  """column name"""
   chunk_tablespace
 
-  """
-  column name
-  """
+  """column name"""
   data_nodes
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_name
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_schema
 
-  """
-  column name
-  """
+  """column name"""
   is_compressed
 
-  """
-  column name
-  """
+  """column name"""
   primary_dimension
 
-  """
-  column name
-  """
+  """column name"""
   primary_dimension_type
 
-  """
-  column name
-  """
+  """column name"""
   range_end
 
-  """
-  column name
-  """
+  """column name"""
   range_end_integer
 
-  """
-  column name
-  """
+  """column name"""
   range_start
 
-  """
-  column name
-  """
+  """column name"""
   range_start_integer
 }
 
-"""
-aggregate stddev on columns
-"""
+"""aggregate stddev on columns"""
 type timescaledb_information_chunks_stddev_fields {
   range_end_integer: Float
   range_start_integer: Float
 }
 
-"""
-aggregate stddev_pop on columns
-"""
+"""aggregate stddev_pop on columns"""
 type timescaledb_information_chunks_stddev_pop_fields {
   range_end_integer: Float
   range_start_integer: Float
 }
 
-"""
-aggregate stddev_samp on columns
-"""
+"""aggregate stddev_samp on columns"""
 type timescaledb_information_chunks_stddev_samp_fields {
   range_end_integer: Float
   range_start_integer: Float
 }
 
-"""
-aggregate sum on columns
-"""
+"""aggregate sum on columns"""
 type timescaledb_information_chunks_sum_fields {
   range_end_integer: bigint
   range_start_integer: bigint
 }
 
-"""
-aggregate var_pop on columns
-"""
+"""aggregate var_pop on columns"""
 type timescaledb_information_chunks_var_pop_fields {
   range_end_integer: Float
   range_start_integer: Float
 }
 
-"""
-aggregate var_samp on columns
-"""
+"""aggregate var_samp on columns"""
 type timescaledb_information_chunks_var_samp_fields {
   range_end_integer: Float
   range_start_integer: Float
 }
 
-"""
-aggregate variance on columns
-"""
+"""aggregate variance on columns"""
 type timescaledb_information_chunks_variance_fields {
   range_end_integer: Float
   range_start_integer: Float
@@ -3762,10 +2831,7 @@ aggregate fields of "timescaledb_information.compression_settings"
 """
 type timescaledb_information_compression_settings_aggregate_fields {
   avg: timescaledb_information_compression_settings_avg_fields
-  count(
-    columns: [timescaledb_information_compression_settings_select_column!]
-    distinct: Boolean
-  ): Int!
+  count(columns: [timescaledb_information_compression_settings_select_column!], distinct: Boolean): Int!
   max: timescaledb_information_compression_settings_max_fields
   min: timescaledb_information_compression_settings_min_fields
   stddev: timescaledb_information_compression_settings_stddev_fields
@@ -3777,17 +2843,14 @@ type timescaledb_information_compression_settings_aggregate_fields {
   variance: timescaledb_information_compression_settings_variance_fields
 }
 
-"""
-aggregate avg on columns
-"""
+"""aggregate avg on columns"""
 type timescaledb_information_compression_settings_avg_fields {
   orderby_column_index: Float
   segmentby_column_index: Float
 }
 
 """
-Boolean expression to filter rows from the table
-"timescaledb_information.compression_settings". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "timescaledb_information.compression_settings". All fields are combined with a logical 'AND'.
 """
 input timescaledb_information_compression_settings_bool_exp {
   _and: [timescaledb_information_compression_settings_bool_exp!]
@@ -3802,17 +2865,13 @@ input timescaledb_information_compression_settings_bool_exp {
   segmentby_column_index: smallint_comparison_exp
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type timescaledb_information_compression_settings_max_fields {
   orderby_column_index: smallint
   segmentby_column_index: smallint
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type timescaledb_information_compression_settings_min_fields {
   orderby_column_index: smallint
   segmentby_column_index: smallint
@@ -3835,93 +2894,65 @@ input timescaledb_information_compression_settings_order_by {
 select columns of table "timescaledb_information.compression_settings"
 """
 enum timescaledb_information_compression_settings_select_column {
-  """
-  column name
-  """
+  """column name"""
   attname
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_name
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_schema
 
-  """
-  column name
-  """
+  """column name"""
   orderby_asc
 
-  """
-  column name
-  """
+  """column name"""
   orderby_column_index
 
-  """
-  column name
-  """
+  """column name"""
   orderby_nullsfirst
 
-  """
-  column name
-  """
+  """column name"""
   segmentby_column_index
 }
 
-"""
-aggregate stddev on columns
-"""
+"""aggregate stddev on columns"""
 type timescaledb_information_compression_settings_stddev_fields {
   orderby_column_index: Float
   segmentby_column_index: Float
 }
 
-"""
-aggregate stddev_pop on columns
-"""
+"""aggregate stddev_pop on columns"""
 type timescaledb_information_compression_settings_stddev_pop_fields {
   orderby_column_index: Float
   segmentby_column_index: Float
 }
 
-"""
-aggregate stddev_samp on columns
-"""
+"""aggregate stddev_samp on columns"""
 type timescaledb_information_compression_settings_stddev_samp_fields {
   orderby_column_index: Float
   segmentby_column_index: Float
 }
 
-"""
-aggregate sum on columns
-"""
+"""aggregate sum on columns"""
 type timescaledb_information_compression_settings_sum_fields {
   orderby_column_index: smallint
   segmentby_column_index: smallint
 }
 
-"""
-aggregate var_pop on columns
-"""
+"""aggregate var_pop on columns"""
 type timescaledb_information_compression_settings_var_pop_fields {
   orderby_column_index: Float
   segmentby_column_index: Float
 }
 
-"""
-aggregate var_samp on columns
-"""
+"""aggregate var_samp on columns"""
 type timescaledb_information_compression_settings_var_samp_fields {
   orderby_column_index: Float
   segmentby_column_index: Float
 }
 
-"""
-aggregate variance on columns
-"""
+"""aggregate variance on columns"""
 type timescaledb_information_compression_settings_variance_fields {
   orderby_column_index: Float
   segmentby_column_index: Float
@@ -3954,17 +2985,13 @@ type timescaledb_information_continuous_aggregates_aggregate {
 aggregate fields of "timescaledb_information.continuous_aggregates"
 """
 type timescaledb_information_continuous_aggregates_aggregate_fields {
-  count(
-    columns: [timescaledb_information_continuous_aggregates_select_column!]
-    distinct: Boolean
-  ): Int!
+  count(columns: [timescaledb_information_continuous_aggregates_select_column!], distinct: Boolean): Int!
   max: timescaledb_information_continuous_aggregates_max_fields
   min: timescaledb_information_continuous_aggregates_min_fields
 }
 
 """
-Boolean expression to filter rows from the table
-"timescaledb_information.continuous_aggregates". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "timescaledb_information.continuous_aggregates". All fields are combined with a logical 'AND'.
 """
 input timescaledb_information_continuous_aggregates_bool_exp {
   _and: [timescaledb_information_continuous_aggregates_bool_exp!]
@@ -3981,16 +3008,12 @@ input timescaledb_information_continuous_aggregates_bool_exp {
   view_schema: name_comparison_exp
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type timescaledb_information_continuous_aggregates_max_fields {
   view_definition: String
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type timescaledb_information_continuous_aggregates_min_fields {
   view_definition: String
 }
@@ -4014,49 +3037,31 @@ input timescaledb_information_continuous_aggregates_order_by {
 select columns of table "timescaledb_information.continuous_aggregates"
 """
 enum timescaledb_information_continuous_aggregates_select_column {
-  """
-  column name
-  """
+  """column name"""
   hypertable_name
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_schema
 
-  """
-  column name
-  """
+  """column name"""
   materialization_hypertable_name
 
-  """
-  column name
-  """
+  """column name"""
   materialization_hypertable_schema
 
-  """
-  column name
-  """
+  """column name"""
   materialized_only
 
-  """
-  column name
-  """
+  """column name"""
   view_definition
 
-  """
-  column name
-  """
+  """column name"""
   view_name
 
-  """
-  column name
-  """
+  """column name"""
   view_owner
 
-  """
-  column name
-  """
+  """column name"""
   view_schema
 }
 
@@ -4089,10 +3094,7 @@ aggregate fields of "timescaledb_information.hypertables"
 """
 type timescaledb_information_hypertables_aggregate_fields {
   avg: timescaledb_information_hypertables_avg_fields
-  count(
-    columns: [timescaledb_information_hypertables_select_column!]
-    distinct: Boolean
-  ): Int!
+  count(columns: [timescaledb_information_hypertables_select_column!], distinct: Boolean): Int!
   max: timescaledb_information_hypertables_max_fields
   min: timescaledb_information_hypertables_min_fields
   stddev: timescaledb_information_hypertables_stddev_fields
@@ -4104,9 +3106,7 @@ type timescaledb_information_hypertables_aggregate_fields {
   variance: timescaledb_information_hypertables_variance_fields
 }
 
-"""
-aggregate avg on columns
-"""
+"""aggregate avg on columns"""
 type timescaledb_information_hypertables_avg_fields {
   num_chunks: Float
   num_dimensions: Float
@@ -4114,8 +3114,7 @@ type timescaledb_information_hypertables_avg_fields {
 }
 
 """
-Boolean expression to filter rows from the table
-"timescaledb_information.hypertables". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "timescaledb_information.hypertables". All fields are combined with a logical 'AND'.
 """
 input timescaledb_information_hypertables_bool_exp {
   _and: [timescaledb_information_hypertables_bool_exp!]
@@ -4133,18 +3132,14 @@ input timescaledb_information_hypertables_bool_exp {
   tablespaces: _name_comparison_exp
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type timescaledb_information_hypertables_max_fields {
   num_chunks: bigint
   num_dimensions: smallint
   replication_factor: smallint
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type timescaledb_information_hypertables_min_fields {
   num_chunks: bigint
   num_dimensions: smallint
@@ -4171,114 +3166,80 @@ input timescaledb_information_hypertables_order_by {
 select columns of table "timescaledb_information.hypertables"
 """
 enum timescaledb_information_hypertables_select_column {
-  """
-  column name
-  """
+  """column name"""
   compression_enabled
 
-  """
-  column name
-  """
+  """column name"""
   data_nodes
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_name
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_schema
 
-  """
-  column name
-  """
+  """column name"""
   is_distributed
 
-  """
-  column name
-  """
+  """column name"""
   num_chunks
 
-  """
-  column name
-  """
+  """column name"""
   num_dimensions
 
-  """
-  column name
-  """
+  """column name"""
   owner
 
-  """
-  column name
-  """
+  """column name"""
   replication_factor
 
-  """
-  column name
-  """
+  """column name"""
   tablespaces
 }
 
-"""
-aggregate stddev on columns
-"""
+"""aggregate stddev on columns"""
 type timescaledb_information_hypertables_stddev_fields {
   num_chunks: Float
   num_dimensions: Float
   replication_factor: Float
 }
 
-"""
-aggregate stddev_pop on columns
-"""
+"""aggregate stddev_pop on columns"""
 type timescaledb_information_hypertables_stddev_pop_fields {
   num_chunks: Float
   num_dimensions: Float
   replication_factor: Float
 }
 
-"""
-aggregate stddev_samp on columns
-"""
+"""aggregate stddev_samp on columns"""
 type timescaledb_information_hypertables_stddev_samp_fields {
   num_chunks: Float
   num_dimensions: Float
   replication_factor: Float
 }
 
-"""
-aggregate sum on columns
-"""
+"""aggregate sum on columns"""
 type timescaledb_information_hypertables_sum_fields {
   num_chunks: bigint
   num_dimensions: smallint
   replication_factor: smallint
 }
 
-"""
-aggregate var_pop on columns
-"""
+"""aggregate var_pop on columns"""
 type timescaledb_information_hypertables_var_pop_fields {
   num_chunks: Float
   num_dimensions: Float
   replication_factor: Float
 }
 
-"""
-aggregate var_samp on columns
-"""
+"""aggregate var_samp on columns"""
 type timescaledb_information_hypertables_var_samp_fields {
   num_chunks: Float
   num_dimensions: Float
   replication_factor: Float
 }
 
-"""
-aggregate variance on columns
-"""
+"""aggregate variance on columns"""
 type timescaledb_information_hypertables_variance_fields {
   num_chunks: Float
   num_dimensions: Float
@@ -4316,10 +3277,7 @@ aggregate fields of "timescaledb_information.job_stats"
 """
 type timescaledb_information_job_stats_aggregate_fields {
   avg: timescaledb_information_job_stats_avg_fields
-  count(
-    columns: [timescaledb_information_job_stats_select_column!]
-    distinct: Boolean
-  ): Int!
+  count(columns: [timescaledb_information_job_stats_select_column!], distinct: Boolean): Int!
   max: timescaledb_information_job_stats_max_fields
   min: timescaledb_information_job_stats_min_fields
   stddev: timescaledb_information_job_stats_stddev_fields
@@ -4331,9 +3289,7 @@ type timescaledb_information_job_stats_aggregate_fields {
   variance: timescaledb_information_job_stats_variance_fields
 }
 
-"""
-aggregate avg on columns
-"""
+"""aggregate avg on columns"""
 type timescaledb_information_job_stats_avg_fields {
   job_id: Float
   total_failures: Float
@@ -4342,8 +3298,7 @@ type timescaledb_information_job_stats_avg_fields {
 }
 
 """
-Boolean expression to filter rows from the table
-"timescaledb_information.job_stats". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "timescaledb_information.job_stats". All fields are combined with a logical 'AND'.
 """
 input timescaledb_information_job_stats_bool_exp {
   _and: [timescaledb_information_job_stats_bool_exp!]
@@ -4363,9 +3318,7 @@ input timescaledb_information_job_stats_bool_exp {
   total_successes: bigint_comparison_exp
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type timescaledb_information_job_stats_max_fields {
   job_id: Int
   job_status: String
@@ -4378,9 +3331,7 @@ type timescaledb_information_job_stats_max_fields {
   total_successes: bigint
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type timescaledb_information_job_stats_min_fields {
   job_id: Int
   job_status: String
@@ -4415,70 +3366,44 @@ input timescaledb_information_job_stats_order_by {
 select columns of table "timescaledb_information.job_stats"
 """
 enum timescaledb_information_job_stats_select_column {
-  """
-  column name
-  """
+  """column name"""
   hypertable_name
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_schema
 
-  """
-  column name
-  """
+  """column name"""
   job_id
 
-  """
-  column name
-  """
+  """column name"""
   job_status
 
-  """
-  column name
-  """
+  """column name"""
   last_run_duration
 
-  """
-  column name
-  """
+  """column name"""
   last_run_started_at
 
-  """
-  column name
-  """
+  """column name"""
   last_run_status
 
-  """
-  column name
-  """
+  """column name"""
   last_successful_finish
 
-  """
-  column name
-  """
+  """column name"""
   next_start
 
-  """
-  column name
-  """
+  """column name"""
   total_failures
 
-  """
-  column name
-  """
+  """column name"""
   total_runs
 
-  """
-  column name
-  """
+  """column name"""
   total_successes
 }
 
-"""
-aggregate stddev on columns
-"""
+"""aggregate stddev on columns"""
 type timescaledb_information_job_stats_stddev_fields {
   job_id: Float
   total_failures: Float
@@ -4486,9 +3411,7 @@ type timescaledb_information_job_stats_stddev_fields {
   total_successes: Float
 }
 
-"""
-aggregate stddev_pop on columns
-"""
+"""aggregate stddev_pop on columns"""
 type timescaledb_information_job_stats_stddev_pop_fields {
   job_id: Float
   total_failures: Float
@@ -4496,9 +3419,7 @@ type timescaledb_information_job_stats_stddev_pop_fields {
   total_successes: Float
 }
 
-"""
-aggregate stddev_samp on columns
-"""
+"""aggregate stddev_samp on columns"""
 type timescaledb_information_job_stats_stddev_samp_fields {
   job_id: Float
   total_failures: Float
@@ -4506,9 +3427,7 @@ type timescaledb_information_job_stats_stddev_samp_fields {
   total_successes: Float
 }
 
-"""
-aggregate sum on columns
-"""
+"""aggregate sum on columns"""
 type timescaledb_information_job_stats_sum_fields {
   job_id: Int
   total_failures: bigint
@@ -4516,9 +3435,7 @@ type timescaledb_information_job_stats_sum_fields {
   total_successes: bigint
 }
 
-"""
-aggregate var_pop on columns
-"""
+"""aggregate var_pop on columns"""
 type timescaledb_information_job_stats_var_pop_fields {
   job_id: Float
   total_failures: Float
@@ -4526,9 +3443,7 @@ type timescaledb_information_job_stats_var_pop_fields {
   total_successes: Float
 }
 
-"""
-aggregate var_samp on columns
-"""
+"""aggregate var_samp on columns"""
 type timescaledb_information_job_stats_var_samp_fields {
   job_id: Float
   total_failures: Float
@@ -4536,9 +3451,7 @@ type timescaledb_information_job_stats_var_samp_fields {
   total_successes: Float
 }
 
-"""
-aggregate variance on columns
-"""
+"""aggregate variance on columns"""
 type timescaledb_information_job_stats_variance_fields {
   job_id: Float
   total_failures: Float
@@ -4552,9 +3465,7 @@ columns and relationships of "timescaledb_information.jobs"
 type timescaledb_information_jobs {
   application_name: name
   config(
-    """
-    JSON select path
-    """
+    """JSON select path"""
     path: String
   ): jsonb
   hypertable_name: name
@@ -4584,10 +3495,7 @@ aggregate fields of "timescaledb_information.jobs"
 """
 type timescaledb_information_jobs_aggregate_fields {
   avg: timescaledb_information_jobs_avg_fields
-  count(
-    columns: [timescaledb_information_jobs_select_column!]
-    distinct: Boolean
-  ): Int!
+  count(columns: [timescaledb_information_jobs_select_column!], distinct: Boolean): Int!
   max: timescaledb_information_jobs_max_fields
   min: timescaledb_information_jobs_min_fields
   stddev: timescaledb_information_jobs_stddev_fields
@@ -4599,17 +3507,14 @@ type timescaledb_information_jobs_aggregate_fields {
   variance: timescaledb_information_jobs_variance_fields
 }
 
-"""
-aggregate avg on columns
-"""
+"""aggregate avg on columns"""
 type timescaledb_information_jobs_avg_fields {
   job_id: Float
   max_retries: Float
 }
 
 """
-Boolean expression to filter rows from the table "timescaledb_information.jobs".
-All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "timescaledb_information.jobs". All fields are combined with a logical 'AND'.
 """
 input timescaledb_information_jobs_bool_exp {
   _and: [timescaledb_information_jobs_bool_exp!]
@@ -4631,18 +3536,14 @@ input timescaledb_information_jobs_bool_exp {
   scheduled: Boolean_comparison_exp
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type timescaledb_information_jobs_max_fields {
   job_id: Int
   max_retries: Int
   next_start: timestamptz
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type timescaledb_information_jobs_min_fields {
   job_id: Int
   max_retries: Int
@@ -4673,128 +3574,86 @@ input timescaledb_information_jobs_order_by {
 select columns of table "timescaledb_information.jobs"
 """
 enum timescaledb_information_jobs_select_column {
-  """
-  column name
-  """
+  """column name"""
   application_name
 
-  """
-  column name
-  """
+  """column name"""
   config
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_name
 
-  """
-  column name
-  """
+  """column name"""
   hypertable_schema
 
-  """
-  column name
-  """
+  """column name"""
   job_id
 
-  """
-  column name
-  """
+  """column name"""
   max_retries
 
-  """
-  column name
-  """
+  """column name"""
   max_runtime
 
-  """
-  column name
-  """
+  """column name"""
   next_start
 
-  """
-  column name
-  """
+  """column name"""
   owner
 
-  """
-  column name
-  """
+  """column name"""
   proc_name
 
-  """
-  column name
-  """
+  """column name"""
   proc_schema
 
-  """
-  column name
-  """
+  """column name"""
   retry_period
 
-  """
-  column name
-  """
+  """column name"""
   schedule_interval
 
-  """
-  column name
-  """
+  """column name"""
   scheduled
 }
 
-"""
-aggregate stddev on columns
-"""
+"""aggregate stddev on columns"""
 type timescaledb_information_jobs_stddev_fields {
   job_id: Float
   max_retries: Float
 }
 
-"""
-aggregate stddev_pop on columns
-"""
+"""aggregate stddev_pop on columns"""
 type timescaledb_information_jobs_stddev_pop_fields {
   job_id: Float
   max_retries: Float
 }
 
-"""
-aggregate stddev_samp on columns
-"""
+"""aggregate stddev_samp on columns"""
 type timescaledb_information_jobs_stddev_samp_fields {
   job_id: Float
   max_retries: Float
 }
 
-"""
-aggregate sum on columns
-"""
+"""aggregate sum on columns"""
 type timescaledb_information_jobs_sum_fields {
   job_id: Int
   max_retries: Int
 }
 
-"""
-aggregate var_pop on columns
-"""
+"""aggregate var_pop on columns"""
 type timescaledb_information_jobs_var_pop_fields {
   job_id: Float
   max_retries: Float
 }
 
-"""
-aggregate var_samp on columns
-"""
+"""aggregate var_samp on columns"""
 type timescaledb_information_jobs_var_samp_fields {
   job_id: Float
   max_retries: Float
 }
 
-"""
-aggregate variance on columns
-"""
+"""aggregate variance on columns"""
 type timescaledb_information_jobs_variance_fields {
   job_id: Float
   max_retries: Float
@@ -4823,9 +3682,7 @@ columns and relationships of "tokens"
 type tokens {
   description: String!
 
-  """
-  An object relationship
-  """
+  """An object relationship"""
   developer: developers!
   developer_id: Int!
   slug: String!
@@ -4880,15 +3737,11 @@ input type for inserting array relation for remote table "tokens"
 input tokens_arr_rel_insert_input {
   data: [tokens_insert_input!]!
 
-  """
-  on conflict condition
-  """
+  """on conflict condition"""
   on_conflict: tokens_on_conflict
 }
 
-"""
-aggregate avg on columns
-"""
+"""aggregate avg on columns"""
 type tokens_avg_fields {
   developer_id: Float
 }
@@ -4918,9 +3771,7 @@ input tokens_bool_exp {
 unique or primary key constraints on table "tokens"
 """
 enum tokens_constraint {
-  """
-  unique or primary key constraint
-  """
+  """unique or primary key constraint"""
   tokens_pkey
 }
 
@@ -4942,9 +3793,7 @@ input tokens_insert_input {
   timestamp: timestamptz
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type tokens_max_fields {
   description: String
   developer_id: Int
@@ -4962,9 +3811,7 @@ input tokens_max_order_by {
   timestamp: order_by
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type tokens_min_fields {
   description: String
   developer_id: Int
@@ -4986,14 +3833,10 @@ input tokens_min_order_by {
 response of any mutation on the table "tokens"
 """
 type tokens_mutation_response {
-  """
-  number of rows affected by the mutation
-  """
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """
-  data from the rows affected by the mutation
-  """
+  """data from the rows affected by the mutation"""
   returning: [tokens!]!
 }
 
@@ -5006,9 +3849,7 @@ input tokens_on_conflict {
   where: tokens_bool_exp
 }
 
-"""
-Ordering options when selecting data from "tokens".
-"""
+"""Ordering options when selecting data from "tokens"."""
 input tokens_order_by {
   description: order_by
   developer: developers_order_by
@@ -5017,9 +3858,7 @@ input tokens_order_by {
   timestamp: order_by
 }
 
-"""
-primary key columns input for table: tokens
-"""
+"""primary key columns input for table: tokens"""
 input tokens_pk_columns_input {
   developer_id: Int!
   slug: String!
@@ -5029,24 +3868,16 @@ input tokens_pk_columns_input {
 select columns of table "tokens"
 """
 enum tokens_select_column {
-  """
-  column name
-  """
+  """column name"""
   description
 
-  """
-  column name
-  """
+  """column name"""
   developer_id
 
-  """
-  column name
-  """
+  """column name"""
   slug
 
-  """
-  column name
-  """
+  """column name"""
   timestamp
 }
 
@@ -5060,9 +3891,7 @@ input tokens_set_input {
   timestamp: timestamptz
 }
 
-"""
-aggregate stddev on columns
-"""
+"""aggregate stddev on columns"""
 type tokens_stddev_fields {
   developer_id: Float
 }
@@ -5074,9 +3903,7 @@ input tokens_stddev_order_by {
   developer_id: order_by
 }
 
-"""
-aggregate stddev_pop on columns
-"""
+"""aggregate stddev_pop on columns"""
 type tokens_stddev_pop_fields {
   developer_id: Float
 }
@@ -5088,9 +3915,7 @@ input tokens_stddev_pop_order_by {
   developer_id: order_by
 }
 
-"""
-aggregate stddev_samp on columns
-"""
+"""aggregate stddev_samp on columns"""
 type tokens_stddev_samp_fields {
   developer_id: Float
 }
@@ -5102,9 +3927,7 @@ input tokens_stddev_samp_order_by {
   developer_id: order_by
 }
 
-"""
-aggregate sum on columns
-"""
+"""aggregate sum on columns"""
 type tokens_sum_fields {
   developer_id: Int
 }
@@ -5120,30 +3943,20 @@ input tokens_sum_order_by {
 update columns of table "tokens"
 """
 enum tokens_update_column {
-  """
-  column name
-  """
+  """column name"""
   description
 
-  """
-  column name
-  """
+  """column name"""
   developer_id
 
-  """
-  column name
-  """
+  """column name"""
   slug
 
-  """
-  column name
-  """
+  """column name"""
   timestamp
 }
 
-"""
-aggregate var_pop on columns
-"""
+"""aggregate var_pop on columns"""
 type tokens_var_pop_fields {
   developer_id: Float
 }
@@ -5155,9 +3968,7 @@ input tokens_var_pop_order_by {
   developer_id: order_by
 }
 
-"""
-aggregate var_samp on columns
-"""
+"""aggregate var_samp on columns"""
 type tokens_var_samp_fields {
   developer_id: Float
 }
@@ -5169,9 +3980,7 @@ input tokens_var_samp_order_by {
   developer_id: order_by
 }
 
-"""
-aggregate variance on columns
-"""
+"""aggregate variance on columns"""
 type tokens_variance_fields {
   developer_id: Float
 }
@@ -5184,42 +3993,10 @@ input tokens_variance_order_by {
 }
 
 """
-Topic scores
-"""
-type TopicScore {
-  score: Float!
-  topic: String!
-}
-
-"""
-Topic classification results
-"""
-type TopicsResult {
-  result: [TopicScore!]!
-}
-
-"""
-Output result
-"""
-type TranscribeResult {
-  """
-  Transcription
-  """
-  result: String!
-}
-
-input Turn {
-  bot: String = null
-  user: String = null
-}
-
-"""
 columns and relationships of "usage"
 """
 type usage {
-  """
-  An object relationship
-  """
+  """An object relationship"""
   developer: developers!
   developer_id: Int!
   execution_time: Int!
@@ -5278,9 +4055,7 @@ input usage_arr_rel_insert_input {
   data: [usage_insert_input!]!
 }
 
-"""
-aggregate avg on columns
-"""
+"""aggregate avg on columns"""
 type usage_avg_fields {
   developer_id: Float
   execution_time: Float
@@ -5331,9 +4106,7 @@ input usage_insert_input {
   timestamp: timestamptz
 }
 
-"""
-aggregate max on columns
-"""
+"""aggregate max on columns"""
 type usage_max_fields {
   developer_id: Int
   execution_time: Int
@@ -5353,9 +4126,7 @@ input usage_max_order_by {
   timestamp: order_by
 }
 
-"""
-aggregate min on columns
-"""
+"""aggregate min on columns"""
 type usage_min_fields {
   developer_id: Int
   execution_time: Int
@@ -5379,20 +4150,14 @@ input usage_min_order_by {
 response of any mutation on the table "usage"
 """
 type usage_mutation_response {
-  """
-  number of rows affected by the mutation
-  """
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """
-  data from the rows affected by the mutation
-  """
+  """data from the rows affected by the mutation"""
   returning: [usage!]!
 }
 
-"""
-Ordering options when selecting data from "usage".
-"""
+"""Ordering options when selecting data from "usage"."""
 input usage_order_by {
   developer: developers_order_by
   developer_id: order_by
@@ -5407,34 +4172,22 @@ input usage_order_by {
 select columns of table "usage"
 """
 enum usage_select_column {
-  """
-  column name
-  """
+  """column name"""
   developer_id
 
-  """
-  column name
-  """
+  """column name"""
   execution_time
 
-  """
-  column name
-  """
+  """column name"""
   payload_hash
 
-  """
-  column name
-  """
+  """column name"""
   service_name
 
-  """
-  column name
-  """
+  """column name"""
   success
 
-  """
-  column name
-  """
+  """column name"""
   timestamp
 }
 
@@ -5450,9 +4203,7 @@ input usage_set_input {
   timestamp: timestamptz
 }
 
-"""
-aggregate stddev on columns
-"""
+"""aggregate stddev on columns"""
 type usage_stddev_fields {
   developer_id: Float
   execution_time: Float
@@ -5466,9 +4217,7 @@ input usage_stddev_order_by {
   execution_time: order_by
 }
 
-"""
-aggregate stddev_pop on columns
-"""
+"""aggregate stddev_pop on columns"""
 type usage_stddev_pop_fields {
   developer_id: Float
   execution_time: Float
@@ -5482,9 +4231,7 @@ input usage_stddev_pop_order_by {
   execution_time: order_by
 }
 
-"""
-aggregate stddev_samp on columns
-"""
+"""aggregate stddev_samp on columns"""
 type usage_stddev_samp_fields {
   developer_id: Float
   execution_time: Float
@@ -5498,9 +4245,7 @@ input usage_stddev_samp_order_by {
   execution_time: order_by
 }
 
-"""
-aggregate sum on columns
-"""
+"""aggregate sum on columns"""
 type usage_sum_fields {
   developer_id: Int
   execution_time: Int
@@ -5514,9 +4259,7 @@ input usage_sum_order_by {
   execution_time: order_by
 }
 
-"""
-aggregate var_pop on columns
-"""
+"""aggregate var_pop on columns"""
 type usage_var_pop_fields {
   developer_id: Float
   execution_time: Float
@@ -5530,9 +4273,7 @@ input usage_var_pop_order_by {
   execution_time: order_by
 }
 
-"""
-aggregate var_samp on columns
-"""
+"""aggregate var_samp on columns"""
 type usage_var_samp_fields {
   developer_id: Float
   execution_time: Float
@@ -5546,9 +4287,7 @@ input usage_var_samp_order_by {
   execution_time: order_by
 }
 
-"""
-aggregate variance on columns
-"""
+"""aggregate variance on columns"""
 type usage_variance_fields {
   developer_id: Float
   execution_time: Float

@@ -1,5 +1,5 @@
-query answer($input: String!, $context: String! = "") {
-  callAnswer(input: $input, context: $context) {
+query answer($input: String!, $context: String! = "", $choices: [String!]!) {
+  callAnswer(input: $input, context: $context, choices: $choices) {
     result
   }
 }
