@@ -1911,7 +1911,7 @@ type query_root {
   """
   Measure sentences similarity
   """
-  callSimilarity(candidates: [String!]!, input: String!): SimilarityResult
+  callSimilarity(candidates: [String!]!, input: String!): SimilarityResult!
   callSpeak(input: String!): SpeakResult!
 
   """

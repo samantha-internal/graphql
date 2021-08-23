@@ -1,4 +1,8 @@
-query topics($input: String = "", $allow_multiple: Boolean = false, $topics: [String!]!) {
+query topics(
+  $input: String = ""
+  $allow_multiple: Boolean = false
+  $topics: [String!]!
+) {
   callTopics(input: $input, allow_multiple: $allow_multiple, topics: $topics) {
     result {
       score

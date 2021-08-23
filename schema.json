@@ -9392,9 +9392,13 @@
               }
             ],
             "type": {
-              "kind": "OBJECT",
-              "name": "SimilarityResult",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SimilarityResult",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
